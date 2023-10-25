@@ -10,6 +10,11 @@
     "preview": "vite preview",
     "prepare": "cd .. && husky install react-app/.husky"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
   },
