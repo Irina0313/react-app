@@ -1,6 +1,5 @@
 module.exports = {
-  
-    "root": true,
+  root: true,
     "extends": [
       "plugin:react/recommended",
       "plugin:@typescript-eslint/recommended",
