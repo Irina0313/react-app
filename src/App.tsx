@@ -5,8 +5,6 @@ import './App.css';
 import Client from './api/Client';
 import { PlanetProps } from './Components/Data/Planet';
 import ErrorComponent from './Components/ErrorComponent';
-import Planet from './Components/Data/Planet';
-import PlanetImag from './Components/PlanetImage';
 
 interface DataState {
   planets: PlanetProps[];

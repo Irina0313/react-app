@@ -9,7 +9,7 @@
     "lint": "eslint src/ --report-unused-disable-directives --max-warnings 0",
     "lint-fix": "eslint src/ --fix",
     "preview": "vite preview",
-    "prepare": "cd .. && husky install react-app/.husky",
+    "prepare": "cd && husky install .husky",
     "format": "npx prettier --write ."
   },
   "husky": {
