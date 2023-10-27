@@ -1,0 +1,25 @@
+.searchWrapper {
+  display: flex;
+  justify-content: center;
+  column-gap: 10px;
+
+}
+
+.searchInput {
+  width: 60%;
+  font-size: 1.8em;
+  border-radius: 8px;
+  border-color: aliceblue;
+}
+
+.searchBtn {
+  width: 120px;
+  font-size: 1.8em;
+
+}
+
+.searchBtn:hover {
+  background-color: darkgoldenrod;
+  border-color: aliceblue;
+  color: aliceblue;
+}

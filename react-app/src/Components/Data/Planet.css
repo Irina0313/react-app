@@ -1,0 +1,25 @@
+.planetWrapper {
+  box-sizing: border-box;
+  padding: 10px;
+  width: 300px;
+  border: 2px solid aliceblue;
+  border-radius: 10px;
+}
+
+.planetDescription {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  font-size: 1.5em;
+}
+
+.planetName {
+  margin: 0;
+  font-size: 2em;
+  color: darkgoldenrod;
+}
+
+.planetDescriptionItem {
+  margin: 0;
+  text-align: start;
+}

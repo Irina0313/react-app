@@ -1,6 +1,51 @@
+body {
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
 #root {
   max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  font-size: 10px;
+  color: aliceblue;
+}
+
+.mainWrapper {
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  row-gap: 20px;
+}
+
+.mainTitle {
+  margin: 0;
+  font-size: 5em;
+  color: darkgoldenrod;
+}
+
+.loading {
+  font-size: 3em;
+  color: aliceblue;
+  text-align: center;
+  margin: 20px 0;
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
 }

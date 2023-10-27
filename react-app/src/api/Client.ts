@@ -1,10 +1,25 @@
 class Client {
-  private apiRoot: string = 'https://swapi.dev/api';
-  getData = async (param: string) => {
+  apiRoot: string = 'https://swapi.dev/api';
+  resource: string;
+
+  constructor(resource: string = 'planets') {
+    this.resource = resource;
+  }
+
+  getData = async (param: string = 'planets') => {
+    this.resource = param;
     const targetRoot = `${this.apiRoot}/${param}`;
     const resp = await fetch(targetRoot);
     const data = await resp.json();
-    console.log(data);
+
+    return data.results;
+  };
+  search = async (searchRequest: string) => {
+    const targetRoot = `${this.apiRoot}/${this.resource}/?search=${searchRequest}`;
+    const resp = await fetch(targetRoot);
+    const data = await resp.json();
+    console.log('search:', data);
+    return data.results;
   };
 }
 
