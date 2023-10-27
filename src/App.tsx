@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import Planet from './Components/Data/Planet';
 import Search from './Components/Search/Search';
 import Data from './Components/Data/Data';
 import './App.css';
