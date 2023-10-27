@@ -2,7 +2,6 @@
   display: flex;
   justify-content: center;
   column-gap: 10px;
-
 }
 
 .searchInput {
@@ -15,7 +14,6 @@
 .searchBtn {
   width: 120px;
   font-size: 1.8em;
-
 }
 
 .searchBtn:hover {

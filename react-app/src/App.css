@@ -28,7 +28,6 @@ body {
 }
 
 .mainWrapper {
-
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -46,8 +45,6 @@ body {
   justify-content: space-between;
 }
 
-
-
 .loading {
   font-size: 3em;
   color: aliceblue;
@@ -57,7 +54,6 @@ body {
 }
 
 @keyframes pulse {
-
   0%,
   100% {
     opacity: 0.1;
@@ -66,5 +62,4 @@ body {
   50% {
     opacity: 1;
   }
-
 }
