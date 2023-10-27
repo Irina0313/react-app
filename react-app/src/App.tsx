@@ -67,7 +67,6 @@ class App extends Component<AppProps, DataState> {
             Test error
           </button>
         </div>
-
         <Search onSearch={this.handleSearch} />
         {this.state.loading ? (
           <div className={`loading`}>Loading...</div>
