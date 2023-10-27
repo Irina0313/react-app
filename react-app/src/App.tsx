@@ -4,10 +4,13 @@ import Data from './Components/Data/Data';
 import './App.css';
 import Client from './api/Client';
 import { PlanetProps } from './Components/Data/Planet';
+import ErrorComponent from './Components/ErrorComponent';
 
 interface DataState {
   planets: PlanetProps[];
   loading: boolean;
+  showError: boolean;
+  err: Error | null | unknown;
 }
 interface AppProps {}
 class App extends Component<AppProps, DataState> {
@@ -16,6 +19,8 @@ class App extends Component<AppProps, DataState> {
     this.state = {
       planets: [],
       loading: false,
+      showError: false,
+      err: null,
     };
   }
 
@@ -35,8 +40,8 @@ class App extends Component<AppProps, DataState> {
         : await client.getData();
       this.setState({ planets, loading: false });
     } catch (error) {
-      console.error('Error fetching data:', error);
-      this.setState({ loading: false });
+      this.setState({ loading: false, showError: true, err: error });
+      console.error(`Error fetching data: ${error}`);
     }
   }
 
@@ -44,13 +49,30 @@ class App extends Component<AppProps, DataState> {
     this.loadPlanets(searchQuery);
   };
 
+  handleError = (): void => {
+    this.setState({ showError: true });
+  };
   render() {
     return (
       <main className="mainWrapper">
-        <h1 className="mainTitle">Star Wars Planets</h1>
+        <div className="titleWrapper">
+          <div style={{ width: '150px' }}></div>
+          <h1 className="mainTitle">Star Wars Planets</h1>
+          <button
+            className="errorBtn"
+            onClick={() => {
+              return this.handleError();
+            }}
+          >
+            Test error
+          </button>
+        </div>
+
         <Search onSearch={this.handleSearch} />
         {this.state.loading ? (
           <div className={`loading`}>Loading...</div>
+        ) : this.state.showError ? (
+          <ErrorComponent err={this.state.err} />
         ) : (
           <Data planets={this.state.planets} />
         )}

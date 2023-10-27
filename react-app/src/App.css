@@ -9,9 +9,21 @@ body {
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1.3rem;
   text-align: center;
   font-size: 10px;
+  color: aliceblue;
+}
+
+.errorBtn {
+  width: 150px;
+  font-size: 1.8em;
+  align-self: flex-end;
+}
+
+.errorBtn:hover {
+  background-color: darkgoldenrod;
+  border-color: aliceblue;
   color: aliceblue;
 }
 
@@ -28,6 +40,13 @@ body {
   font-size: 5em;
   color: darkgoldenrod;
 }
+
+.titleWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+
 
 .loading {
   font-size: 3em;

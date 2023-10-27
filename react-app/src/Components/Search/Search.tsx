@@ -37,7 +37,7 @@ class Search extends Component<Props, State> {
             type="text"
             onChange={(e) => this.updateSavedSearch(e.target.value)}
           />
-          <button className="searchBtn" onClick={this.handleSearch}>
+          <button className="button searchBtn" onClick={this.handleSearch}>
             Search
           </button>
         </form>

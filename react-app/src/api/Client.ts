@@ -11,14 +11,13 @@ class Client {
     const targetRoot = `${this.apiRoot}/${param}`;
     const resp = await fetch(targetRoot);
     const data = await resp.json();
-
+    console.log(data.results);
     return data.results;
   };
   search = async (searchRequest: string) => {
     const targetRoot = `${this.apiRoot}/${this.resource}/?search=${searchRequest}`;
     const resp = await fetch(targetRoot);
     const data = await resp.json();
-    console.log('search:', data);
     return data.results;
   };
 }
