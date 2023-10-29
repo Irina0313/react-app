@@ -7,7 +7,7 @@ import { PlanetProps } from './Components/Data/Planet';
 import ErrorComponent from './Components/ErrorBoundary/ErrorComponent';
 
 function App() {
-  const client = Client();
+  const { search, getData } = Client();
   const [planets, setPlanets] = useState<PlanetProps[]>([]);
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -19,8 +19,8 @@ function App() {
       setLoading(true);
       try {
         const planetsArr: PlanetProps[] = searchQuery
-          ? await client.search(searchQuery)
-          : await client.getData();
+          ? await search(searchQuery)
+          : await getData();
         setPlanets(planetsArr);
         setDataLoaded(true);
         setLoading(false);
@@ -30,7 +30,7 @@ function App() {
         setErr(error);
       }
     },
-    [client]
+    [search, getData]
   );
 
   useEffect(() => {
