@@ -1,25 +1,26 @@
-class Client {
-  apiRoot: string = 'https://swapi.dev/api';
-  resource: string;
+import { useState } from 'react';
 
-  constructor(resource: string = 'planets') {
-    this.resource = resource;
-  }
+function Client() {
+  const apiRoot: string = 'https://swapi.dev/api';
 
-  getData = async (param: string = 'planets') => {
-    this.resource = param;
-    const targetRoot = `${this.apiRoot}/${param}`;
+  const [resource, setResource] = useState('planets');
+
+  const getData = async (param: string = resource) => {
+    param !== resource && setResource(param);
+    const targetRoot = `${apiRoot}/${param}`;
     const resp = await fetch(targetRoot);
     const data = await resp.json();
     return data.results;
   };
 
-  search = async (searchRequest: string) => {
-    const targetRoot = `${this.apiRoot}/${this.resource}/?search=${searchRequest}`;
+  const search = async (searchRequest: string) => {
+    const targetRoot = `${apiRoot}/${resource}/?search=${searchRequest}`;
     const resp = await fetch(targetRoot);
     const data = await resp.json();
     return data.results;
   };
+
+  return { getData, search };
 }
 
 export default Client;
