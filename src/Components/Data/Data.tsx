@@ -8,7 +8,6 @@ interface DataProps {
 
 function Data(props: DataProps) {
   const planets = props.planets;
-  console.log(planets);
   return (
     <section className="planetsWrapper">
       {planets.length > 0 ? (
