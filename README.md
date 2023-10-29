@@ -4,7 +4,7 @@ Star Wars Planets is a training React app that uses the RESTfull api of Star War
 
 ## Installation
 
-- сlone the repository [https://github.com/Irina0313/react-app.git]
+- сlone the repository [https://github.com/Irina0313/react-app.git] and checkout to the "week-1" branch
 - run "npm install"
 
 ## Usage

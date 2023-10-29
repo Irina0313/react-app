@@ -17,32 +17,31 @@ class Planet extends Component<PlanetProps> {
   }
 
   render() {
+    const { name, climate, gravity, diameter, population, terrain } =
+      this.props;
+
+    const planetDescriptionItems = [
+      { label: 'Climate', value: climate },
+      { label: 'Gravity', value: gravity },
+      { label: 'Diameter', value: diameter },
+      { label: 'Population', value: population },
+      { label: 'Terrain', value: terrain },
+    ];
+
     return (
-      <>
-        <div className="planetWrapper">
-          <div className="planetImageContainer">
-            <PlanetImage planetName={this.props.name} />
-          </div>
-          <h2 className="planetName">{this.props.name}</h2>
-          <div className="planetDescription">
-            <p className="planetDescriptionItem">
-              Climate: {this.props.climate}
-            </p>
-            <p className="planetDescriptionItem">
-              Gravity: {this.props.gravity}
-            </p>
-            <p className="planetDescriptionItem">
-              Diameter: {this.props.diameter}
-            </p>
-            <p className="planetDescriptionItem">
-              Population: {this.props.population}
-            </p>
-            <p className="planetDescriptionItem">
-              Terrain: {this.props.terrain}
-            </p>
-          </div>
+      <div className="planetWrapper">
+        <div className="planetImageContainer">
+          <PlanetImage planetName={name} />
         </div>
-      </>
+        <h2 className="planetName">{name}</h2>
+        <div className="planetDescription">
+          {planetDescriptionItems.map((item, index) => (
+            <p key={index} className="planetDescriptionItem">
+              {item.label}: {item.value}
+            </p>
+          ))}
+        </div>
+      </div>
     );
   }
 }
