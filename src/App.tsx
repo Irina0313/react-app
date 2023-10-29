@@ -1,82 +1,75 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import Search from './Components/Search/Search';
 import Data from './Components/Data/Data';
 import './App.css';
 import Client from './api/Client';
 import { PlanetProps } from './Components/Data/Planet';
 import ErrorComponent from './Components/ErrorBoundary/ErrorComponent';
-interface DataState {
-  planets: PlanetProps[];
-  loading: boolean;
-  showError: boolean;
-  err: Error | null | unknown;
-}
-interface AppProps {}
-class App extends Component<AppProps, DataState> {
-  constructor(props: AppProps) {
-    super(props);
-    this.state = {
-      planets: [],
-      loading: false,
-      showError: false,
-      err: null,
-    };
-  }
 
-  async componentDidMount() {
-    const isSavedSearchExists = localStorage.getItem('savedSearch') !== null;
-    isSavedSearchExists
-      ? await this.loadPlanets(JSON.parse(localStorage.savedSearch))
-      : await this.loadPlanets();
-  }
+function App() {
+  const [planets, setPlanets] = useState<PlanetProps[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [err, setErr] = useState<Error | null | unknown>(null);
 
-  async loadPlanets(searchQuery: string = '') {
-    this.setState({ loading: true });
+  const loadPlanets = async (searchQuery: string = '') => {
+    setLoading(true);
     try {
       const client = new Client();
-      const planets: PlanetProps[] = searchQuery
+      const planetsArr: PlanetProps[] = searchQuery
         ? await client.search(searchQuery)
         : await client.getData();
-      this.setState({ planets, loading: false });
+      setPlanets(planetsArr);
+      setLoading(false);
     } catch (error) {
-      this.setState({ loading: false, showError: true, err: error });
+      setLoading(false);
+      setShowError(true);
+      setErr(error);
     }
-  }
-
-  handleSearch = async (searchQuery: string) => {
-    this.loadPlanets(searchQuery);
   };
 
-  handleTestError = (): void => {
-    this.setState({ showError: true });
+  useEffect(() => {
+    const fetchData = async () => {
+      const isSavedSearchExists = localStorage.getItem('savedSearch') !== null;
+      isSavedSearchExists
+        ? await loadPlanets(JSON.parse(localStorage.savedSearch))
+        : await loadPlanets();
+    };
+    fetchData();
+  }, []);
+
+  const handleSearch = async (searchQuery: string) => {
+    loadPlanets(searchQuery);
   };
 
-  render() {
-    return (
-      <main className="mainWrapper">
-        <div className="titleWrapper">
-          <div style={{ width: '150px' }}></div>
-          <h1 className="mainTitle">Star Wars Planets</h1>
-          <button
-            className="errorBtn"
-            onClick={() => {
-              return this.handleTestError();
-            }}
-          >
-            Test error
-          </button>
-        </div>
-        <Search onSearch={this.handleSearch} />
-        {this.state.loading ? (
-          <div className={`loading`}>Loading...</div>
-        ) : this.state.showError ? (
-          <ErrorComponent err={this.state.err} />
-        ) : (
-          <Data planets={this.state.planets} />
-        )}
-      </main>
-    );
-  }
+  const handleTestError = () => {
+    setShowError(true);
+  };
+
+  return (
+    <main className="mainWrapper">
+      <div className="titleWrapper">
+        <div style={{ width: '150px' }}></div>
+        <h1 className="mainTitle">Star Wars Planets</h1>
+        <button
+          className="errorBtn"
+          onClick={() => {
+            return handleTestError();
+          }}
+        >
+          Test error
+        </button>
+      </div>
+      <Search onSearch={handleSearch} />
+      {loading ? (
+        <div className={`loading`}>Loading...</div>
+      ) : showError ? (
+        <ErrorComponent err={err} />
+      ) : (
+        <Data planets={planets} />
+      )}
+    </main>
+  );
 }
 
 export default App;
