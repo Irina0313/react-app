@@ -7,10 +7,10 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src/ --report-unused-disable-directives --max-warnings 0",
-    "lint-fix": "eslint src/ --fix",
+    "lint:fix": "eslint src/ --fix",
     "preview": "vite preview",
     "prepare": "cd && husky install .husky",
-    "format": "npx prettier --write ."
+    "format:fix": "npx prettier --write ."
   },
   "husky": {
     "hooks": {
@@ -19,8 +19,8 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
-      "npm run lint-fix",
-      "npm run format"
+      "npm run lint:fix",
+      "npm run format:fix"
     ]
   },
   "dependencies": {
