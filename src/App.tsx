@@ -4,8 +4,7 @@ import Data from './Components/Data/Data';
 import './App.css';
 import Client from './api/Client';
 import { PlanetProps } from './Components/Data/Planet';
-import ErrorComponent from './Components/ErrorComponent';
-
+import ErrorComponent from './Components/ErrorBoundary/ErrorComponent';
 interface DataState {
   planets: PlanetProps[];
   loading: boolean;
@@ -41,7 +40,6 @@ class App extends Component<AppProps, DataState> {
       this.setState({ planets, loading: false });
     } catch (error) {
       this.setState({ loading: false, showError: true, err: error });
-      console.error(`Error fetching data: ${error}`);
     }
   }
 
@@ -49,9 +47,10 @@ class App extends Component<AppProps, DataState> {
     this.loadPlanets(searchQuery);
   };
 
-  handleError = (): void => {
+  handleTestError = (): void => {
     this.setState({ showError: true });
   };
+
   render() {
     return (
       <main className="mainWrapper">
@@ -61,7 +60,7 @@ class App extends Component<AppProps, DataState> {
           <button
             className="errorBtn"
             onClick={() => {
-              return this.handleError();
+              return this.handleTestError();
             }}
           >
             Test error

@@ -5,6 +5,8 @@
 }
 
 .searchInput {
+  padding: 0 8px;
+  box-sizing: border-box;
   width: 60%;
   font-size: 1.8em;
   border-radius: 8px;
@@ -20,4 +22,13 @@
   background-color: darkgoldenrod;
   border-color: aliceblue;
   color: aliceblue;
+}
+
+@media screen and (max-width: 500px) {
+  .searchBtn {
+    padding: 8px;
+    width: 80px;
+    font-size: 1.8em;
+  }
+
 }

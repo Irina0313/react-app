@@ -15,15 +15,16 @@ class PlanetImage extends Component<PlanetImageProps, PlanetImageState> {
     };
   }
   private src: string = `./planets/${this.props.planetName}.jpg`;
+  private noImagesrc: string = './no-image-png-2.png';
 
   handleImageError = () => {
-    this.setState({ imageError: true });
+    this.setState((prevState) => ({ imageError: !prevState.imageError }));
   };
 
   render() {
-    return this.state.imageError ? null : (
+    return (
       <img
-        src={this.src}
+        src={this.state.imageError ? this.noImagesrc : this.src}
         alt={this.props.planetName}
         className="planetImage"
         onError={this.handleImageError}

@@ -16,9 +16,9 @@ class Search extends Component<Props, State> {
       : '',
   };
   updateSavedSearch = (value: string) => {
-    this.setState({
+    this.setState(() => ({
       savedSearch: value.trim(),
-    });
+    }));
   };
 
   handleSearch = async (e: FormEvent) => {
@@ -35,6 +35,7 @@ class Search extends Component<Props, State> {
             className="searchInput"
             defaultValue={this.state.savedSearch}
             type="text"
+            placeholder="Type in the name of the planet"
             onChange={(e) => this.updateSavedSearch(e.target.value)}
           />
           <button className="button searchBtn" onClick={this.handleSearch}>

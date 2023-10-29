@@ -15,9 +15,16 @@ class Data extends Component<DataProps> {
   render() {
     return (
       <section className="planetsWrapper">
-        {this.props.planets.map((planet) => (
-          <Planet key={planet.name} {...planet} />
-        ))}
+        {this.props.planets.length > 0 ? (
+          this.props.planets.map((planet) => (
+            <Planet key={planet.name} {...planet} />
+          ))
+        ) : (
+          <h2 className="dataTitle">
+            Sorry... Nothing found <br />
+            Try looking for something else
+          </h2>
+        )}
       </section>
     );
   }

@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import PlanetImage from '../PlanetImage';
+import PlanetImage from './PlanetImage';
 import './Planet.css';
 
 export interface PlanetProps {
@@ -20,7 +20,9 @@ class Planet extends Component<PlanetProps> {
     return (
       <>
         <div className="planetWrapper">
-          <PlanetImage planetName={this.props.name} />
+          <div className="planetImageContainer">
+            <PlanetImage planetName={this.props.name} />
+          </div>
           <h2 className="planetName">{this.props.name}</h2>
           <div className="planetDescription">
             <p className="planetDescriptionItem">

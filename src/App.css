@@ -1,18 +1,23 @@
-body {
-  background-color: black;
+.mainWrapper {
+  margin: 0 auto;
+  max-width: 1280px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  row-gap: 40px;
 }
 
-#root {
-  max-width: 1280px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 1.3rem;
-  text-align: center;
-  font-size: 10px;
-  color: aliceblue;
+.mainTitle {
+  margin: 0;
+  font-size: 5em;
+  line-height: 1.1;
+  color: darkgoldenrod;
+}
+
+.titleWrapper {
+  max-width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .errorBtn {
@@ -27,24 +32,6 @@ body {
   color: aliceblue;
 }
 
-.mainWrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  row-gap: 20px;
-}
-
-.mainTitle {
-  margin: 0;
-  font-size: 5em;
-  color: darkgoldenrod;
-}
-
-.titleWrapper {
-  display: flex;
-  justify-content: space-between;
-}
-
 .loading {
   font-size: 3em;
   color: aliceblue;
@@ -54,6 +41,7 @@ body {
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     opacity: 0.1;
@@ -61,5 +49,21 @@ body {
 
   50% {
     opacity: 1;
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .titleWrapper {
+    flex-direction: column;
+    row-gap: 10px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .errorBtn {
+    padding: 8px;
+    width: 100px;
+    font-size: 1.8em;
+    align-self: flex-end;
   }
 }
