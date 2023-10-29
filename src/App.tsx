@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Search from './Components/Search/Search';
 import Data from './Components/Data/Data';
 import './App.css';
@@ -12,31 +12,41 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
   const [err, setErr] = useState<Error | null | unknown>(null);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
-  const loadPlanets = async (searchQuery: string = '') => {
-    setLoading(true);
-    try {
-      const planetsArr: PlanetProps[] = searchQuery
-        ? await client.search(searchQuery)
-        : await client.getData();
-      setPlanets(planetsArr);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      setShowError(true);
-      setErr(error);
-    }
-  };
+  const loadPlanets = useCallback(
+    async (searchQuery: string = '') => {
+      setLoading(true);
+      try {
+        const planetsArr: PlanetProps[] = searchQuery
+          ? await client.search(searchQuery)
+          : await client.getData();
+        setPlanets(planetsArr);
+        setDataLoaded(true);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        setShowError(true);
+        setErr(error);
+      }
+    },
+    [client]
+  );
 
   useEffect(() => {
     const fetchData = async () => {
-      const isSavedSearchExists = localStorage.getItem('savedSearch') !== null;
-      isSavedSearchExists
-        ? await loadPlanets(JSON.parse(localStorage.savedSearch))
-        : await loadPlanets();
+      if (!dataLoaded) {
+        const isSavedSearchExists =
+          localStorage.getItem('savedSearch') !== null;
+        if (isSavedSearchExists) {
+          await loadPlanets(JSON.parse(localStorage.savedSearch));
+        } else {
+          await loadPlanets();
+        }
+      }
     };
     fetchData();
-  }, []);
+  }, [dataLoaded, loadPlanets]);
 
   const handleSearch = async (searchQuery: string) => {
     loadPlanets(searchQuery);
