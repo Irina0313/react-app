@@ -1,50 +1,43 @@
-import { Component, FormEvent } from 'react';
+import { useState, FormEvent } from 'react';
 import './Search.css';
 
-interface Props {
+interface SearchProps {
   onSearch: (searchQuery: string) => void;
 }
 
-interface State {
-  savedSearch: string;
-}
-
-class Search extends Component<Props, State> {
-  state = {
-    savedSearch: localStorage.getItem('savedSearch')
+function Search({ onSearch }: SearchProps) {
+  const [savedSearch, setSavedSearch] = useState(
+    localStorage.getItem('savedSearch')
       ? JSON.parse(localStorage.savedSearch)
-      : '',
-  };
-  updateSavedSearch = (value: string) => {
-    this.setState(() => ({
-      savedSearch: value.trim(),
-    }));
+      : ''
+  );
+
+  const updateSavedSearch = (value: string) => {
+    setSavedSearch(value.trim());
   };
 
-  handleSearch = async (e: FormEvent) => {
+  const handleSearch = async (e: FormEvent) => {
     e.preventDefault();
-    localStorage.savedSearch = JSON.stringify(this.state.savedSearch);
-    this.props.onSearch(this.state.savedSearch);
+    localStorage.savedSearch = JSON.stringify(savedSearch);
+    onSearch(savedSearch);
   };
 
-  render() {
-    return (
-      <section>
-        <form className="searchWrapper">
-          <input
-            className="searchInput"
-            defaultValue={this.state.savedSearch}
-            type="text"
-            placeholder="Type in the name of the planet"
-            onChange={(e) => this.updateSavedSearch(e.target.value)}
-          />
-          <button className="button searchBtn" onClick={this.handleSearch}>
-            Search
-          </button>
-        </form>
-      </section>
-    );
-  }
+  return (
+    <section>
+      <form className="searchWrapper">
+        <input
+          className="searchInput"
+          defaultValue={savedSearch}
+          type="text"
+          placeholder="Type in the name of the planet"
+          onChange={(e) => updateSavedSearch(e.target.value)}
+        />
+        <button className="button searchBtn" onClick={handleSearch}>
+          Search
+        </button>
+      </form>
+    </section>
+  );
 }
 
 export default Search;
