@@ -28,8 +28,8 @@ function Planet(props: PlanetProps) {
       </div>
       <h2 className="planetName">{name}</h2>
       <div className="planetDescription">
-        {planetDescriptionItems.map((item, index) => (
-          <p key={index} className="planetDescriptionItem">
+        {planetDescriptionItems.map((item) => (
+          <p key={item.label} className="planetDescriptionItem">
             {item.label}: {item.value}
           </p>
         ))}
