@@ -58,7 +58,9 @@ function App() {
     fetchData();
   }, [dataLoaded, loadPlanets, searchParams]);
 
-  const handleSearch = async (searchQuery: string) => {
+  const handleSearch = async (searchQuery: string | null) => {
+    localStorage.savedSearch = JSON.stringify(searchQuery);
+    setSearchParams(searchQuery);
     loadPlanets(searchQuery);
   };
 
@@ -75,7 +77,7 @@ function App() {
           Test error
         </button>
       </div>
-      <Search onSearch={handleSearch} />
+      <Search onSearch={handleSearch} prevSearchParams={searchParams} />
       {loading && <div className={`loading`}>Loading...</div>}
       {showError && <ErrorComponent err={err} />}
       {!loading && !showError && <Data planets={planets} />}

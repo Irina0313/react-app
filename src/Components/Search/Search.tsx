@@ -2,24 +2,20 @@ import { useState, FormEvent } from 'react';
 import './Search.css';
 
 interface SearchProps {
-  onSearch: (searchQuery: string) => void;
+  onSearch: (searchQuery: string | null) => void;
+  prevSearchParams: string | null;
 }
 
-function Search({ onSearch }: SearchProps) {
-  const [savedSearch, setSavedSearch] = useState(
-    localStorage.getItem('savedSearch')
-      ? JSON.parse(localStorage.savedSearch)
-      : ''
-  );
+function Search({ onSearch, prevSearchParams }: SearchProps) {
+  const [currSearchParams, setCurrSearchParams] = useState(prevSearchParams);
 
   const updateSavedSearch = (value: string) => {
-    setSavedSearch(value.trim());
+    setCurrSearchParams(value.trim());
   };
 
   const handleSearch = async (e: FormEvent) => {
     e.preventDefault();
-    localStorage.savedSearch = JSON.stringify(savedSearch);
-    onSearch(savedSearch);
+    onSearch(currSearchParams);
   };
 
   return (
@@ -27,7 +23,7 @@ function Search({ onSearch }: SearchProps) {
       <form className="searchWrapper">
         <input
           className="searchInput"
-          defaultValue={savedSearch}
+          defaultValue={currSearchParams || ''}
           type="text"
           placeholder="Type in the name of the planet"
           onChange={(e) => updateSavedSearch(e.target.value)}
