@@ -1,20 +1,21 @@
 import { Component, FormEvent } from 'react';
 import './Search.css';
 
-interface Props {
-  onSearch: (searchQuery: string) => void;
+interface SerchProps {
+  onSearch: (searchQuery: string | null) => void;
 }
 
 interface State {
-  savedSearch: string;
+  savedSearch: string | null;
 }
 
-class Search extends Component<Props, State> {
-  state = {
-    savedSearch: localStorage.getItem('savedSearch')
-      ? JSON.parse(localStorage.savedSearch)
-      : '',
-  };
+class Search extends Component<SerchProps, State> {
+  constructor(params: SerchProps) {
+    super(params);
+
+    this.state = { savedSearch: localStorage.savedSearch && null };
+  }
+
   updateSavedSearch = (value: string) => {
     this.setState(() => ({
       savedSearch: value.trim(),
@@ -22,9 +23,10 @@ class Search extends Component<Props, State> {
   };
 
   handleSearch = async (e: FormEvent) => {
+    const { savedSearch } = this.state;
     e.preventDefault();
-    localStorage.savedSearch = JSON.stringify(this.state.savedSearch);
-    this.props.onSearch(this.state.savedSearch);
+    localStorage.savedSearch = JSON.stringify(savedSearch);
+    this.props.onSearch(savedSearch);
   };
 
   render() {
@@ -33,8 +35,8 @@ class Search extends Component<Props, State> {
         <form className="searchWrapper">
           <input
             className="searchInput"
-            defaultValue={this.state.savedSearch}
-            type="text"
+            defaultValue={this.state.savedSearch as string}
+            type="search"
             placeholder="Type in the name of the planet"
             onChange={(e) => this.updateSavedSearch(e.target.value)}
           />

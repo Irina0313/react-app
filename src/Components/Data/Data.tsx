@@ -13,12 +13,11 @@ class Data extends Component<DataProps> {
   }
 
   render() {
+    const { planets } = this.props;
     return (
       <section className="planetsWrapper">
-        {this.props.planets.length > 0 ? (
-          this.props.planets.map((planet) => (
-            <Planet key={planet.name} {...planet} />
-          ))
+        {planets.length > 0 ? (
+          planets.map((planet) => <Planet key={planet.name} {...planet} />)
         ) : (
           <h2 className="dataTitle">
             Sorry... Nothing found <br />
