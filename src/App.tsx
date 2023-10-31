@@ -7,16 +7,28 @@ import { PlanetProps } from './Components/Data/Planet';
 import ErrorComponent from './Components/ErrorBoundary/ErrorComponent';
 
 function App() {
+  const safeJsonParse = (s: string) => {
+    try {
+      return JSON.parse(s);
+    } catch (e) {}
+
+    return null;
+  };
+
   const { search, getData } = Client();
   const [planets, setPlanets] = useState<PlanetProps[]>([]);
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
   const [err, setErr] = useState<Error | null | unknown>(null);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [searchParams, setSearchParams] = useState<string | null>(
+    safeJsonParse(localStorage.savedSearch)
+  );
 
   const loadPlanets = useCallback(
-    async (searchQuery: string = '') => {
+    async (searchQuery: string | null) => {
       setLoading(true);
+
       try {
         const planetsArr: PlanetProps[] = searchQuery
           ? await search(searchQuery)
@@ -34,19 +46,17 @@ function App() {
   );
 
   useEffect(() => {
+    setSearchParams(safeJsonParse(localStorage.savedSearch));
+
     const fetchData = async () => {
       if (!dataLoaded) {
-        const isSavedSearchExists =
-          localStorage.getItem('savedSearch') !== null;
-        if (isSavedSearchExists) {
-          await loadPlanets(JSON.parse(localStorage.savedSearch));
-        } else {
-          await loadPlanets();
-        }
+        setSearchParams(safeJsonParse(localStorage.savedSearch));
+        await loadPlanets(searchParams);
       }
     };
+
     fetchData();
-  }, [dataLoaded, loadPlanets]);
+  }, [dataLoaded, loadPlanets, searchParams]);
 
   const handleSearch = async (searchQuery: string) => {
     loadPlanets(searchQuery);
@@ -61,23 +71,14 @@ function App() {
       <div className="titleWrapper">
         <div style={{ width: '150px' }}></div>
         <h1 className="mainTitle">Star Wars Planets</h1>
-        <button
-          className="errorBtn"
-          onClick={() => {
-            return handleTestError();
-          }}
-        >
+        <button className="errorBtn" onClick={handleTestError}>
           Test error
         </button>
       </div>
       <Search onSearch={handleSearch} />
-      {loading ? (
-        <div className={`loading`}>Loading...</div>
-      ) : showError ? (
-        <ErrorComponent err={err} />
-      ) : (
-        <Data planets={planets} />
-      )}
+      {loading && <div className={`loading`}>Loading...</div>}
+      {showError && <ErrorComponent err={err} />}
+      {!loading && !showError && <Data planets={planets} />}
     </main>
   );
 }
