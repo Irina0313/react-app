@@ -3,30 +3,30 @@ import './Search.css';
 
 interface SerchProps {
   onSearch: (searchQuery: string | null) => void;
+  prevSearchParams: string | null;
 }
 
 interface State {
-  savedSearch: string | null;
+  currSearchParams: string | null;
 }
 
 class Search extends Component<SerchProps, State> {
   constructor(params: SerchProps) {
     super(params);
 
-    this.state = { savedSearch: localStorage.savedSearch && null };
+    this.state = { currSearchParams: this.props.prevSearchParams };
   }
 
   updateSavedSearch = (value: string) => {
     this.setState(() => ({
-      savedSearch: value.trim(),
+      currSearchParams: value.trim(),
     }));
   };
 
   handleSearch = async (e: FormEvent) => {
-    const { savedSearch } = this.state;
+    const { currSearchParams } = this.state;
     e.preventDefault();
-    localStorage.savedSearch = JSON.stringify(savedSearch);
-    this.props.onSearch(savedSearch);
+    this.props.onSearch(currSearchParams);
   };
 
   render() {
@@ -35,7 +35,7 @@ class Search extends Component<SerchProps, State> {
         <form className="searchWrapper">
           <input
             className="searchInput"
-            defaultValue={this.state.savedSearch as string}
+            defaultValue={this.state.currSearchParams || ''}
             type="search"
             placeholder="Type in the name of the planet"
             onChange={(e) => this.updateSavedSearch(e.target.value)}

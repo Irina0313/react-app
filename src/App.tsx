@@ -22,7 +22,7 @@ class App extends Component<AppProps, DataState> {
       loading: false,
       showError: false,
       err: null,
-      searchParams: null,
+      searchParams: this.safeJsonParse(localStorage.savedSearch),
     };
   }
 
@@ -35,10 +35,6 @@ class App extends Component<AppProps, DataState> {
   };
 
   async componentDidMount() {
-    this.setState(() => ({
-      searchParams: this.safeJsonParse(localStorage.savedSearch),
-    }));
-
     await this.loadPlanets(this.state.searchParams);
   }
 
@@ -56,7 +52,11 @@ class App extends Component<AppProps, DataState> {
     }
   }
 
-  handleSearch = async (searchQuery: string | null) => {
+  handleSearch = (searchQuery: string | null) => {
+    localStorage.savedSearch = JSON.stringify(searchQuery);
+    this.setState(() => ({
+      searchParams: searchQuery,
+    }));
     this.loadPlanets(searchQuery);
   };
 
@@ -65,7 +65,7 @@ class App extends Component<AppProps, DataState> {
   };
 
   render() {
-    const { loading, err, planets, showError } = this.state;
+    const { loading, err, planets, showError, searchParams } = this.state;
     return (
       <main className="mainWrapper">
         <div className="titleWrapper">
@@ -75,7 +75,7 @@ class App extends Component<AppProps, DataState> {
             Test error
           </button>
         </div>
-        <Search onSearch={this.handleSearch} />
+        <Search onSearch={this.handleSearch} prevSearchParams={searchParams} />
         {loading && <div className={`loading`}>Loading...</div>}
         {showError && <ErrorComponent err={err} />}
         {!loading && !showError && <Data planets={planets} />}
