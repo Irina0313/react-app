@@ -1,0 +1,15 @@
+.planetsWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: 20px;
+  row-gap: 20px;
+}
+
+.dataTitle {
+  margin: 0;
+  padding-top: 30px;
+  width: 100%;
+  font-size: 3rem;
+  line-height: 2;
+}
