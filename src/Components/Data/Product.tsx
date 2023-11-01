@@ -16,7 +16,7 @@ export interface ProductsProps {
 }
 
 function Product(props: ProductsProps) {
-  const { id, title, brand, category, price, images } = props;
+  const { title, brand, category, price, images } = props;
 
   const productDescriptionItems = [
     { label: 'Brand', value: brand },
@@ -32,7 +32,7 @@ function Product(props: ProductsProps) {
       <h2 className="productName">{title}</h2>
       <div className="productDescription">
         {productDescriptionItems.map((item) => (
-          <p key={id} className="productDescriptionItem">
+          <p key={item.label} className="productDescriptionItem">
             {item.label}: {item.value}
           </p>
         ))}
