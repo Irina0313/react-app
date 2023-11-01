@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import './PlanetImage.css';
+import './ProductImage.css';
 
-interface PlanetImageProps {
-  planetName: string;
+interface ProductImageProps {
+  productImgURL: string;
 }
 
-function PlanetImage(props: PlanetImageProps) {
-  const planetName: string = props.planetName;
+function ProductImage(props: ProductImageProps) {
+  const src: string = props.productImgURL;
   const [imageError, setImageError] = useState(false);
-  const src: string = `./planets/${planetName}.jpg`;
+
   const noImagesrc: string = './no-image-png-2.png';
 
   const handleImageError = () => {
@@ -18,11 +18,11 @@ function PlanetImage(props: PlanetImageProps) {
   return (
     <img
       src={imageError ? noImagesrc : src}
-      alt={planetName}
-      className="planetImage"
+      alt="product image"
+      className="productImage"
       onError={handleImageError}
     />
   );
 }
 
-export default PlanetImage;
+export default ProductImage;

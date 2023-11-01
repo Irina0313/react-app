@@ -3,7 +3,7 @@ import Search from './Components/Search/Search';
 import Data from './Components/Data/Data';
 import './App.css';
 import Client from './api/Client';
-import { PlanetProps } from './Components/Data/Planet';
+import { ProductsProps } from './Components/Data/Product';
 import ErrorComponent from './Components/ErrorBoundary/ErrorComponent';
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
     }
   };
 
-  const [planets, setPlanets] = useState<PlanetProps[]>([]);
+  const [products, setProducts] = useState<ProductsProps[]>([]);
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
   const [err, setErr] = useState<Error | null | unknown>(null);
@@ -25,15 +25,16 @@ function App() {
   const { getData, search } = Client();
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
-  const loadPlanets = useCallback(
+  const loadProducts = useCallback(
     async (searchQuery: string | null = null) => {
       setLoading(true);
 
       try {
-        const planetsData: PlanetProps[] = searchQuery
+        const data: ProductsProps[] = searchQuery
           ? await search(searchQuery)
           : await getData();
-        setPlanets(planetsData);
+        console.log(data);
+        setProducts(data);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -48,15 +49,15 @@ function App() {
     if (!isDataLoaded) {
       (async () => {
         setIsDataLoaded(true);
-        await loadPlanets(searchParams);
+        await loadProducts(searchParams);
       })();
     }
-  }, [searchParams, loadPlanets, isDataLoaded]);
+  }, [searchParams, loadProducts, isDataLoaded]);
 
   const handleSearch = (searchQuery: string | null) => {
     localStorage.savedSearch = JSON.stringify(searchQuery);
     setSearchParams(searchQuery);
-    loadPlanets(searchQuery);
+    loadProducts(searchQuery);
   };
 
   const handleTestError = () => {
@@ -67,7 +68,7 @@ function App() {
     <main className="mainWrapper">
       <div className="titleWrapper">
         <div style={{ width: '150px' }}></div>
-        <h1 className="mainTitle">Star Wars Planets</h1>
+        <h1 className="mainTitle">RSS React App Catalog</h1>
         <button className="errorBtn" onClick={handleTestError}>
           Test error
         </button>
@@ -75,7 +76,7 @@ function App() {
       <Search onSearch={handleSearch} prevSearchParams={searchParams} />
       {loading && <div className={`loading`}>Loading...</div>}
       {showError && <ErrorComponent err={err} />}
-      {!loading && !showError && <Data planets={planets} />}
+      {!loading && !showError && <Data products={products} />}
     </main>
   );
 }
