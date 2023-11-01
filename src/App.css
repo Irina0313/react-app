@@ -12,7 +12,6 @@
   font-size: 5em;
   line-height: 1.1;
   color: rgb(11, 121, 184);
-  ;
 }
 
 .titleWrapper {
@@ -29,7 +28,6 @@
 
 .errorBtn:hover {
   background-color: rgb(11, 121, 184);
-  ;
   border-color: aliceblue;
   color: aliceblue;
 }
@@ -43,7 +41,6 @@
 }
 
 @keyframes pulse {
-
   0%,
   100% {
     opacity: 0.1;
