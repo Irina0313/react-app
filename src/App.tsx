@@ -10,31 +10,30 @@ function App() {
   const safeJsonParse = (s: string) => {
     try {
       return JSON.parse(s);
-    } catch (e) {}
-
-    return null;
+    } catch (e) {
+      return null;
+    }
   };
 
-  const { search, getData } = Client();
   const [planets, setPlanets] = useState<PlanetProps[]>([]);
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
   const [err, setErr] = useState<Error | null | unknown>(null);
-  const [dataLoaded, setDataLoaded] = useState(false);
   const [searchParams, setSearchParams] = useState<string | null>(
     safeJsonParse(localStorage.savedSearch)
   );
+  const { getData, search } = Client();
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   const loadPlanets = useCallback(
-    async (searchQuery: string | null) => {
+    async (searchQuery: string | null = null) => {
       setLoading(true);
 
       try {
-        const planetsArr: PlanetProps[] = searchQuery
+        const planetsData: PlanetProps[] = searchQuery
           ? await search(searchQuery)
           : await getData();
-        setPlanets(planetsArr);
-        setDataLoaded(true);
+        setPlanets(planetsData);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -42,23 +41,19 @@ function App() {
         setErr(error);
       }
     },
-    [search, getData]
+    [getData, search]
   );
 
   useEffect(() => {
-    setSearchParams(safeJsonParse(localStorage.savedSearch));
-
-    const fetchData = async () => {
-      if (!dataLoaded) {
-        setSearchParams(safeJsonParse(localStorage.savedSearch));
+    if (!isDataLoaded) {
+      (async () => {
+        setIsDataLoaded(true);
         await loadPlanets(searchParams);
-      }
-    };
+      })();
+    }
+  }, [searchParams, loadPlanets, isDataLoaded]);
 
-    fetchData();
-  }, [dataLoaded, loadPlanets, searchParams]);
-
-  const handleSearch = async (searchQuery: string | null) => {
+  const handleSearch = (searchQuery: string | null) => {
     localStorage.savedSearch = JSON.stringify(searchQuery);
     setSearchParams(searchQuery);
     loadPlanets(searchQuery);

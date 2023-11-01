@@ -11,6 +11,7 @@ function Client() {
       const targetRoot = `${apiRoot}/${param}`;
       const resp = await fetch(targetRoot);
       const data = await resp.json();
+      console.log('getData', data);
       return data.results;
     },
 
@@ -18,6 +19,7 @@ function Client() {
       const targetRoot = `${apiRoot}/${resource}/?search=${searchRequest}`;
       const resp = await fetch(targetRoot);
       const data = await resp.json();
+      console.log('search', data);
       return data.results;
     },
   };
