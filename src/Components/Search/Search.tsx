@@ -24,8 +24,7 @@ function Search({ onSearch, prevSearchParams }: SearchProps) {
         <input
           className="searchInput"
           defaultValue={currSearchParams || ''}
-          type="text"
-          placeholder="Type in the name of the planet"
+          type="search"
           onChange={(e) => updateSavedSearch(e.target.value)}
         />
         <button className="button searchBtn" onClick={handleSearch}>
