@@ -1,28 +1,38 @@
-.mainWrapper {
+header {
+  max-width: 1920px;
+  width: 100%;
+  margin: 0 0 30px 0;
+
+}
+
+.mainContainer {
+  max-width: 1920px;
   margin: 0 auto;
-  max-width: 1280px;
+  transition: max-width 0.1s, margin 0.1s;
+}
+
+.mainContainer.modalOpened {
+  max-width: 65%;
+  margin: 0;
+}
+
+.mainWrapper {
+  max-width: 1920px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   row-gap: 40px;
 }
 
-.mainTitle {
-  margin: 0;
-  font-size: 5em;
-  line-height: 1.1;
-  color: rgb(11, 121, 184);
-}
-
 .titleWrapper {
-  max-width: 100%;
+  max-width: 1920px;
   display: flex;
   justify-content: space-between;
 }
 
 .errorBtn {
   width: 150px;
-  font-size: 1.8em;
   align-self: flex-end;
 }
 
@@ -34,13 +44,14 @@
 
 .loading {
   font-size: 3em;
-  color: aliceblue;
+  color: rgb(0, 0, 0);
   text-align: center;
   margin: 20px 0;
   animation: pulse 2s ease infinite;
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     opacity: 0.1;

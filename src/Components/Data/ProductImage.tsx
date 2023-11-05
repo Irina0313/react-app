@@ -3,6 +3,7 @@ import './ProductImage.css';
 
 interface ProductImageProps {
   productImgURL: string;
+  isModalImage?: boolean;
 }
 
 function ProductImage(props: ProductImageProps) {
@@ -19,7 +20,7 @@ function ProductImage(props: ProductImageProps) {
     <img
       src={imageError ? noImagesrc : src}
       alt="product image"
-      className="productImage"
+      className={`${props.isModalImage ? 'modalImage' : 'productImage'}`}
       onError={handleImageError}
     />
   );

@@ -1,24 +1,37 @@
 import './Data.css';
 import Product from './Product';
-import { ProductsProps } from './Product';
+import { ProductProps } from './Product';
+import { Link } from 'react-router-dom';
 
 interface DataProps {
-  products: ProductsProps[];
+  products: ProductProps[];
+  currPageNum: number;
 }
 
 function Data(props: DataProps) {
   const products = props.products;
-  console.log(products);
+  const currPageNum = props.currPageNum;
+
   return (
-    <section className="productsWrapper">
-      {products.length > 0 ? (
-        products.map((product) => <Product key={product.id} {...product} />)
-      ) : (
-        <h2 className="dataTitle">
-          Sorry... Nothing found <br />
-          Try looking for something else
-        </h2>
-      )}
+    <section className="dataWrapper">
+      <div className="productsWrapper">
+        {products.length > 0 ? (
+          products.map((product) => (
+            <Link
+              to={`/${currPageNum}/${product.id}`}
+              key={product.id}
+              className="productWrapper"
+            >
+              <Product {...product} />
+            </Link>
+          ))
+        ) : (
+          <h2 className="dataTitle">
+            Sorry... Nothing found <br />
+            Try looking for something else
+          </h2>
+        )}
+      </div>
     </section>
   );
 }

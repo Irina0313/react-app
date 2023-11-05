@@ -1,4 +1,5 @@
 import { Component, ReactNode } from 'react';
+import './ErrorBoundary.css';
 
 interface Props {
   children?: ReactNode;
@@ -21,9 +22,8 @@ class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <>
-          <h1>
-            Sorry.. there was an error
-            <br />
+          <h1 className="errorTitle">
+            Sorry.. there was an error or no such page found.
             <br />
             Try reloading the page
           </h1>

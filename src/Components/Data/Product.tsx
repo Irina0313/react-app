@@ -1,7 +1,7 @@
 import './Product.css';
 import ProductImage from './ProductImage';
 
-export interface ProductsProps {
+export interface ProductProps {
   id: number;
   title: string;
   description: string;
@@ -15,7 +15,7 @@ export interface ProductsProps {
   images: string[];
 }
 
-function Product(props: ProductsProps) {
+function Product(props: ProductProps) {
   const { title, brand, category, price, images } = props;
 
   const productDescriptionItems = [
@@ -25,7 +25,7 @@ function Product(props: ProductsProps) {
   ];
 
   return (
-    <div className="productWrapper">
+    <>
       <div className="productImageContainer">
         <ProductImage productImgURL={images[0]} />
       </div>
@@ -37,7 +37,7 @@ function Product(props: ProductsProps) {
           </p>
         ))}
       </div>
-    </div>
+    </>
   );
 }
 

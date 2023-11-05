@@ -8,14 +8,14 @@
   padding: 0 8px;
   box-sizing: border-box;
   width: 60%;
-  font-size: 1.8em;
+  font-size: 1.4em;
   border-radius: 8px;
   border-color: aliceblue;
 }
 
 .searchBtn {
   width: 120px;
-  font-size: 1.8em;
+
 }
 
 .searchBtn:hover {

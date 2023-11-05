@@ -1,18 +1,3 @@
-.productWrapper {
-  padding: 10px;
-  width: 300px;
-  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.4);
-  box-sizing: border-box;
-  background-color: aliceblue;
-  border: 2px solid rgb(11, 121, 184);
-  border-radius: 10px;
-  transition: transform 0.3s;
-}
-
-.productWrapper:hover {
-  transform: scale(1.1);
-}
-
 .productImageContainer {
   max-width: 100%;
   height: 100px;
@@ -23,13 +8,12 @@
   flex-direction: column;
   align-items: start;
   color: black;
-  font-size: 1.6em;
-  line-height: 1.5em;
+  font-size: 1.4em;
+  line-height: 1.2em;
 }
 
 .productName {
   margin: 0;
-  font-size: 2.3em;
   color: rgb(11, 121, 184);
 }
 

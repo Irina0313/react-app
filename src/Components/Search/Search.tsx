@@ -1,4 +1,5 @@
 import { useState, FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Search.css';
 
 interface SearchProps {
@@ -9,12 +10,15 @@ interface SearchProps {
 function Search({ onSearch, prevSearchParams }: SearchProps) {
   const [currSearchParams, setCurrSearchParams] = useState(prevSearchParams);
 
+  const navigate = useNavigate();
+
   const updateSavedSearch = (value: string) => {
     setCurrSearchParams(value.trim());
   };
 
   const handleSearch = async (e: FormEvent) => {
     e.preventDefault();
+    navigate(`/1`);
     onSearch(currSearchParams);
   };
 

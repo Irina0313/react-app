@@ -1,17 +1,20 @@
-* {
-  box-sizing: border-box;
-}
-
 body {
+  position: relative;
+  max-width: 1280px;
   margin: 0 auto;
-  width: 100%;
-
+  padding: 1.3rem;
   min-height: 100vh;
+  background-image: url(../public/background-image.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 :root {
-  margin: 0 auto;
-  padding: 1.3rem;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  margin-right: calc(-1 * (100vw - 100%));
+
   text-align: center;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -24,14 +27,28 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-  background-image: url(../public/background-image.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+
 }
 
 h1 {
-  font-size: 3rem;
+  margin: 0;
+  font-size: 4em;
+  line-height: 1.1;
+  color: rgb(11, 121, 184);
+}
+
+h2 {
+  margin: 0;
+  font-size: 2.5em;
+  line-height: 1.1;
+  color: rgb(11, 121, 184);
+}
+
+h3 {
+  margin: 0;
+  font-size: 2em;
+  line-height: 1.1;
+  color: rgb(59, 167, 230);
 }
 
 button {
@@ -41,4 +58,5 @@ button {
   font-weight: 500;
   cursor: pointer;
   transition: border-color 0.25s;
+  font-size: 1.4em;
 }
