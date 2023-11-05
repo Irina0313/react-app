@@ -3,7 +3,6 @@ import './ErrorBoundary.css';
 
 interface Props {
   children?: ReactNode;
-  handleReload: () => void;
 }
 
 interface State {
