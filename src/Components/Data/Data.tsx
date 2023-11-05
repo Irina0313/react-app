@@ -1,23 +1,37 @@
-import Planet from './Planet';
 import './Data.css';
-import { PlanetProps } from './Planet';
+import Product from './Product';
+import { ProductProps } from './Product';
+import { Link } from 'react-router-dom';
 
 interface DataProps {
-  planets: PlanetProps[];
+  products: ProductProps[];
+  currPageNum: number;
 }
 
 function Data(props: DataProps) {
-  const planets = props.planets;
+  const products = props.products;
+  const currPageNum = props.currPageNum;
+
   return (
-    <section className="planetsWrapper">
-      {planets.length > 0 ? (
-        planets.map((planet) => <Planet key={planet.name} {...planet} />)
-      ) : (
-        <h2 className="dataTitle">
-          Sorry... Nothing found <br />
-          Try looking for something else
-        </h2>
-      )}
+    <section className="dataWrapper">
+      <div className="productsWrapper">
+        {products.length > 0 ? (
+          products.map((product) => (
+            <Link
+              to={`/${currPageNum}/${product.id}`}
+              key={product.id}
+              className="productWrapper"
+            >
+              <Product {...product} />
+            </Link>
+          ))
+        ) : (
+          <h2 className="dataTitle">
+            Sorry... Nothing found <br />
+            Try looking for something else
+          </h2>
+        )}
+      </div>
     </section>
   );
 }

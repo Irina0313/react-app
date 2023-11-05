@@ -1,28 +1,33 @@
-import { useState } from 'react';
+import { ProductProps } from '../Components/Data/Product';
 
-function Client() {
-  const apiRoot: string = 'https://swapi.dev/api';
-
-  const [resource, setResource] = useState('planets');
-
-  return {
-    getData: async (param: string = resource) => {
-      param !== resource && setResource(param);
-      const targetRoot = `${apiRoot}/${param}`;
-      const resp = await fetch(targetRoot);
-      const data = await resp.json();
-      console.log('getData', data);
-      return data.results;
-    },
-
-    search: async (searchRequest: string) => {
-      const targetRoot = `${apiRoot}/${resource}/?search=${searchRequest}`;
-      const resp = await fetch(targetRoot);
-      const data = await resp.json();
-      console.log('search', data);
-      return data.results;
-    },
-  };
+/* https://dummyjson.com/products/search?q=sam&skip=2&limit=2 */
+export interface IApiResp {
+  products: ProductProps[];
+  total: number;
+  skip: number;
+  limit: number;
 }
 
-export default Client;
+async function client(
+  resource: string = 'products',
+  searchRequest: string | null = null,
+  itemsPerPage: number = 30,
+  currPageNumber: number
+): Promise<IApiResp> {
+  const apiRoot: string = 'https://dummyjson.com';
+
+  const getData = async () => {
+    const search = searchRequest ? `/search?q=${searchRequest}&` : '/?';
+    const skip = (currPageNumber - 1) * itemsPerPage;
+    const targetRoot = `${apiRoot}/${resource}${search}limit=${itemsPerPage}&skip=${skip}`;
+
+    const resp = await fetch(targetRoot);
+    const data = await resp.json();
+
+    return data;
+  };
+
+  return await getData();
+}
+
+export default client;
