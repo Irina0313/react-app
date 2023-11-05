@@ -3,6 +3,7 @@ import './ErrorBoundary.css';
 
 interface Props {
   children?: ReactNode;
+  handleReload: () => void;
 }
 
 interface State {
@@ -25,6 +26,14 @@ class ErrorBoundary extends Component<Props, State> {
           <h1 className="errorTitle">
             Sorry.. there was an error or no such page found.
           </h1>
+          <button
+            className="errBoundaryBtn"
+            onClick={() => {
+              window.location.replace('/page/1');
+            }}
+          >
+            Return to the Main Page
+          </button>
         </>
       );
     }

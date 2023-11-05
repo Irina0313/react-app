@@ -16,6 +16,7 @@ import ErrorComponent from './Components/ErrorBoundary/ErrorComponent';
 import Pagination from './Components/Pagination/Pagination';
 import Data from './Components/Data/Data';
 import './Components/Layout.css';
+import ErrorBoundary from './Components/ErrorBoundary/ErrorBoundary';
 
 export interface MainWrapperProps {
   loading: boolean;
@@ -87,6 +88,8 @@ function App() {
     [itemsPerPage, searchParams]
   );
 
+  console.log('showError', showError, isDataLoaded, 'kk');
+
   useEffect(() => {
     if (!isDataLoaded) {
       (async () => {
@@ -140,56 +143,64 @@ function App() {
     await loadProducts(searchParams, itemsPerPage, currPageNum);
   };
 
-  return (
-    <>
-      <Routes>
-        <Route
-          path={`/`}
-          element={<Layout handleTestError={handleTestError} />}
-        >
-          <Route
-            path={'page/:pageNumber/*'}
-            element={
-              <>
-                <main className="mainWrapper">
-                  <Search
-                    onSearch={handleSearch}
-                    prevSearchParams={searchParams}
-                  />
+  const handleReload = () => {
+    console.log('hh');
+    navigate('/page/1');
+    setShowError(false);
+  };
 
-                  {showError && <ErrorComponent err={err} />}
-                  {!showError && (
-                    <Pagination
-                      onPaginatorBtnsClick={handlePaginatorBtnsClick}
-                      totalProducts={totalProducts}
-                      loading={loading}
-                    />
-                  )}
-                  {loading && <div className="loading">Loading...</div>}
-                  {!loading && !showError && (
-                    <Data products={products} currPageNum={currPageNum} />
-                  )}
-                </main>
-                <Outlet />
-              </>
-            }
+  return (
+    <ErrorBoundary handleReload={handleReload}>
+      <>
+        <Routes>
+          <Route
+            path={`/`}
+            element={<Layout handleTestError={handleTestError} />}
           >
             <Route
-              path={'productId/:id'}
+              path={'page/:pageNumber/*'}
               element={
-                <ProductPage
-                  products={products}
-                  getProducts={updateProducts}
-                  loading={loading}
-                />
-              }
-            />
-          </Route>
-        </Route>
+                <>
+                  <main className="mainWrapper">
+                    <Search
+                      onSearch={handleSearch}
+                      prevSearchParams={searchParams}
+                    />
 
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </>
+                    {showError && <ErrorComponent err={err} />}
+                    {!showError && (
+                      <Pagination
+                        onPaginatorBtnsClick={handlePaginatorBtnsClick}
+                        totalProducts={totalProducts}
+                        loading={loading}
+                      />
+                    )}
+                    {loading && <div className="loading">Loading...</div>}
+                    {!loading && !showError && (
+                      <Data products={products} currPageNum={currPageNum} />
+                    )}
+                  </main>
+                  <Outlet />
+                </>
+              }
+            >
+              <Route
+                path={'productId/:id'}
+                element={
+                  <ProductPage
+                    products={products}
+                    getProducts={updateProducts}
+                    loading={loading}
+                  />
+                }
+              />
+            </Route>
+          </Route>
+
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </>
+    </ErrorBoundary>
   );
 }
 

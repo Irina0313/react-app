@@ -2,3 +2,15 @@
   margin: 40px 0;
   line-height: 1.5;
 }
+
+.errBoundaryBtn {
+  width: 250px;
+  font-size: 1.8em;
+  align-self: center;
+}
+
+.errBoundaryBtn:hover {
+  background-color: rgb(11, 121, 184);
+  border-color: aliceblue;
+  color: aliceblue;
+}
