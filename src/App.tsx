@@ -55,6 +55,9 @@ function App() {
   const [totalProducts, setTotaProducts] = useState(0);
   const [currPageNum, setCurrPageNum] = useState(Number(segments[1]) || 1);
 
+  if (segments.length >= 4 && segments[3] !== '') {
+    setShowError(true);
+  }
   const loadProducts = useCallback(
     async (
       searchQuery: string | null = searchParams,
