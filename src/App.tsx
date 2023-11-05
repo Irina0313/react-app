@@ -88,8 +88,6 @@ function App() {
     [itemsPerPage, searchParams]
   );
 
-  console.log('showError', showError, isDataLoaded, 'kk');
-
   useEffect(() => {
     if (!isDataLoaded) {
       (async () => {
