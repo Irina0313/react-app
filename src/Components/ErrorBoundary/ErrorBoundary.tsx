@@ -24,8 +24,6 @@ class ErrorBoundary extends Component<Props, State> {
         <>
           <h1 className="errorTitle">
             Sorry.. there was an error or no such page found.
-            <br />
-            Try reloading the page
           </h1>
         </>
       );

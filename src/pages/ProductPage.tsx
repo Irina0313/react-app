@@ -15,6 +15,7 @@ function ProductPage(props: ProductPageProps) {
   const navigate = useNavigate();
 
   const { pageNumber, id } = useParams();
+
   const product = products.filter(
     (product) => Number(product.id) === Number(id)
   )[0];
@@ -27,14 +28,14 @@ function ProductPage(props: ProductPageProps) {
       const divElement = e.target;
       if (divElement.classList.contains('modalBackdrop')) {
         setIsModalOpen(false);
-        navigate(`/${pageNumber}`);
+        navigate(`/page/${pageNumber}`);
       }
     }
   };
 
   const handleCloseBtnClick = () => {
     setIsModalOpen(false);
-    navigate(`/${pageNumber}`);
+    navigate(`/page/${pageNumber}`);
   };
 
   useEffect(() => {

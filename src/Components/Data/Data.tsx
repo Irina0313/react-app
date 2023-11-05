@@ -10,7 +10,6 @@ interface DataProps {
 
 function Data(props: DataProps) {
   const products = props.products;
-  const currPageNum = props.currPageNum;
 
   return (
     <section className="dataWrapper">
@@ -18,7 +17,7 @@ function Data(props: DataProps) {
         {products.length > 0 ? (
           products.map((product) => (
             <Link
-              to={`/${currPageNum}/${product.id}`}
+              to={`productId/${product.id}`}
               key={product.id}
               className="productWrapper"
             >
@@ -26,10 +25,7 @@ function Data(props: DataProps) {
             </Link>
           ))
         ) : (
-          <h2 className="dataTitle">
-            Sorry... Nothing found <br />
-            Try looking for something else
-          </h2>
+          <h2 className="dataTitle">Sorry... Nothing found</h2>
         )}
       </div>
     </section>

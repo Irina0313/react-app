@@ -54,9 +54,13 @@ function App() {
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(30);
   const [totalProducts, setTotaProducts] = useState(0);
-  const [currPageNum, setCurrPageNum] = useState(Number(segments[1]) || 1);
+  const [currPageNum, setCurrPageNum] = useState(Number(segments[2]) || 1);
 
-  if (segments.length >= 4 && segments[3] !== '') {
+  if (
+    (segments.length >= 6 && segments[5] !== '') ||
+    (segments.length === 5 && segments[4] === '') ||
+    (segments.length === 4 && segments[3] !== 'productId')
+  ) {
     setShowError(true);
   }
 
@@ -87,9 +91,17 @@ function App() {
     if (!isDataLoaded) {
       (async () => {
         setIsDataLoaded(true);
-        setCurrPageNum(Number(segments[1]));
-        navigate(pathname.length === 1 ? `${pathname}1` : `${pathname}`);
-        await loadProducts(searchParams, itemsPerPage, Number(segments[1]));
+        const currPage = Number(segments[2]);
+        setCurrPageNum(currPage);
+
+        if (pathname.length === 1) {
+          navigate(`page/1`);
+          setCurrPageNum(1);
+          await loadProducts(searchParams, itemsPerPage, 1);
+        } else {
+          navigate(`${pathname}`);
+          await loadProducts(searchParams, itemsPerPage, currPage);
+        }
       })();
     }
   }, [
@@ -136,7 +148,7 @@ function App() {
           element={<Layout handleTestError={handleTestError} />}
         >
           <Route
-            path={`:pageNumber/*`}
+            path={'page/:pageNumber/*'}
             element={
               <>
                 <main className="mainWrapper">
@@ -163,7 +175,7 @@ function App() {
             }
           >
             <Route
-              path={`:id`}
+              path={'productId/:id'}
               element={
                 <ProductPage
                   products={products}

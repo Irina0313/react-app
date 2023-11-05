@@ -19,6 +19,7 @@ async function client(
   const getData = async () => {
     const search = searchRequest ? `/search?q=${searchRequest}&` : '/?';
     const skip = (currPageNumber - 1) * itemsPerPage;
+
     const targetRoot = `${apiRoot}/${resource}${search}limit=${itemsPerPage}&skip=${skip}`;
     const resp = await fetch(targetRoot);
     const data = await resp.json();

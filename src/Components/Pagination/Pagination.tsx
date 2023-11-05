@@ -17,16 +17,16 @@ function Pagination(props: PaginationProps) {
 
   const handleClick = (btn: string) => {
     if (btn === 'prev' && Number(pageNumber) > 1) {
-      navigate(`/${Number(pageNumber) - 1}`);
+      navigate(`/page/${Number(pageNumber) - 1}`);
       onPaginatorBtnsClick(Number(pageNumber) - 1, selectedOption);
     } else if (btn === 'next') {
-      navigate(`/${Number(pageNumber) + 1}`);
+      navigate(`/page/${Number(pageNumber) + 1}`);
       onPaginatorBtnsClick(Number(pageNumber) + 1, selectedOption);
     }
   };
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    navigate(`/1`);
+    navigate(`/page/1`);
     const selectedValue: number = Number(event.target.value);
     setSelectedOption(selectedValue);
     onPaginatorBtnsClick(Number(pageNumber), selectedValue);

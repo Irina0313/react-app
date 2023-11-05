@@ -18,7 +18,7 @@ function Search({ onSearch, prevSearchParams }: SearchProps) {
 
   const handleSearch = async (e: FormEvent) => {
     e.preventDefault();
-    navigate(`/1`);
+    navigate(`/page/1`);
     onSearch(currSearchParams);
   };
 
