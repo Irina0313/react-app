@@ -38,6 +38,7 @@ function App() {
       return null;
     }
   };
+
   const navigate = useNavigate();
 
   const { pathname } = useLocation();
@@ -58,6 +59,7 @@ function App() {
   if (segments.length >= 4 && segments[3] !== '') {
     setShowError(true);
   }
+
   const loadProducts = useCallback(
     async (
       searchQuery: string | null = searchParams,

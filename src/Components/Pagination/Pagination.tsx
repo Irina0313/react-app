@@ -10,11 +10,8 @@ interface PaginationProps {
 
 function Pagination(props: PaginationProps) {
   const { onPaginatorBtnsClick, totalProducts, loading } = props;
-
   const { pageNumber } = useParams();
-
   const navigate = useNavigate();
-
   const [selectedOption, setSelectedOption] = useState(30);
   const lastPageNum = Math.ceil(totalProducts / selectedOption);
 

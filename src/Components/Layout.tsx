@@ -8,6 +8,7 @@ export interface LayoutProps {
 function Layout(props: LayoutProps) {
   const { handleTestError } = props;
   const { id } = useParams();
+
   return (
     <div className={`mainContainer ${id && 'modalOpened'}`}>
       <header className="header ">
@@ -24,4 +25,5 @@ function Layout(props: LayoutProps) {
     </div>
   );
 }
+
 export default Layout;
