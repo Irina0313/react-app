@@ -36,3 +36,9 @@
   line-height: 2;
   color: black;
 }
+
+.returnToMainPageBtn {
+  width: 250px;
+  font-size: 1.8em;
+  align-self: center;
+}

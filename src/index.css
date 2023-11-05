@@ -59,3 +59,9 @@ button {
   transition: border-color 0.25s;
   font-size: 1.4em;
 }
+
+button:hover {
+  background-color: rgb(11, 121, 184);
+  border-color: aliceblue;
+  color: aliceblue;
+}
