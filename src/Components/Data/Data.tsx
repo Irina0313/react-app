@@ -27,14 +27,6 @@ function Data(props: DataProps) {
         ) : (
           <>
             <h2 className="dataTitle">Sorry... Nothing found</h2>
-            <button
-              className="returnToMainPageBtn"
-              onClick={() => {
-                window.location.replace('/page/1');
-              }}
-            >
-              Return to the First Page
-            </button>
           </>
         )}
       </div>

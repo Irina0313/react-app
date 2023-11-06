@@ -53,7 +53,7 @@ function ProductPage(props: ProductPageProps) {
     >
       <div className="modalContent">
         {loading && <div className="loading">Loading...</div>}
-        {products.length > 0 && (
+        {!loading && products.length > 0 && (
           <>
             <h2 className="modalTitle">{product.title}</h2>
             <div className="modalImageContainer">

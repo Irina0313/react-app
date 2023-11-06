@@ -29,7 +29,7 @@ function Pagination(props: PaginationProps) {
     navigate(`/page/1`);
     const selectedValue: number = Number(event.target.value);
     setSelectedOption(selectedValue);
-    onPaginatorBtnsClick(Number(pageNumber), selectedValue);
+    onPaginatorBtnsClick(1, selectedValue);
   };
 
   return (
