@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 interface DataProps {
   products: ProductProps[];
-  currPageNum: number;
+  currPageNum: number | null;
 }
 
 function Data(props: DataProps) {
@@ -14,21 +14,15 @@ function Data(props: DataProps) {
   return (
     <section className="dataWrapper">
       <div className="productsWrapper">
-        {products.length > 0 ? (
-          products.map((product) => (
-            <Link
-              to={`productId/${product.id}`}
-              key={product.id}
-              className="productWrapper"
-            >
-              <Product {...product} />
-            </Link>
-          ))
-        ) : (
-          <>
-            <h2 className="dataTitle">Sorry... Nothing found</h2>
-          </>
-        )}
+        {products.map((product) => (
+          <Link
+            to={`productId=${product.id}`}
+            key={product.id}
+            className="productWrapper"
+          >
+            <Product {...product} />
+          </Link>
+        ))}
       </div>
     </section>
   );

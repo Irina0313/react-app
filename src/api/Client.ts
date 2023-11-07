@@ -16,17 +16,13 @@ async function client(
 ): Promise<IApiResp> {
   const apiRoot: string = 'https://dummyjson.com';
 
-  const getData = async () => {
-    const search = searchRequest ? `/search?q=${searchRequest}&` : '/?';
-    const skip = (currPageNumber - 1) * itemsPerPage;
+  const search = searchRequest ? `/search?q=${searchRequest}&` : '/?';
+  const skip = (currPageNumber - 1) * itemsPerPage;
 
-    const targetRoot = `${apiRoot}/${resource}${search}limit=${itemsPerPage}&skip=${skip}`;
-    const resp = await fetch(targetRoot);
-    const data = await resp.json();
-    return data;
-  };
-
-  return await getData();
+  const targetRoot = `${apiRoot}/${resource}${search}limit=${itemsPerPage}&skip=${skip}`;
+  const resp = await fetch(targetRoot);
+  const data = await resp.json();
+  return data;
 }
 
 export default client;

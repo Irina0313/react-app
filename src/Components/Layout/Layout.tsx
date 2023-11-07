@@ -1,4 +1,5 @@
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import useGetURLParams from '../../hooks/getURLParams';
 import './Layout.css';
 
 export interface LayoutProps {
@@ -7,7 +8,7 @@ export interface LayoutProps {
 
 function Layout(props: LayoutProps) {
   const { handleTestError } = props;
-  const { id } = useParams();
+  const { id } = useGetURLParams();
 
   return (
     <div className={`mainContainer ${id && 'modalOpened'}`}>

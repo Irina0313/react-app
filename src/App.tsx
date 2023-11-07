@@ -1,34 +1,12 @@
 import { useState, useCallback, useEffect } from 'react';
-import {
-  Routes,
-  Route,
-  useNavigate,
-  Outlet,
-  useLocation,
-} from 'react-router-dom';
-import ProductPage from './pages/ProductPage';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import ProductPage from './pages/ProductPage/ProductPage';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
-import Layout from './Components/Layout';
-import { ProductProps } from './Components/Data/Product';
+import Layout from './Components/Layout/Layout';
 import client from './api/Client';
-import Search from './Components/Search/Search';
-import ErrorComponent from './Components/ErrorBoundary/ErrorComponent';
-import Pagination from './Components/Pagination/Pagination';
-import Data from './Components/Data/Data';
-import './Components/Layout.css';
-
-export interface MainWrapperProps {
-  loading: boolean;
-  showError: boolean;
-  err: Error | null | unknown;
-  totalProducts: number;
-  products: ProductProps[];
-  handleTestError: () => void;
-  handleSearch: (searchQuery: string | null) => void;
-  searchParams: string | null;
-  currPageNumber: number;
-  onPaginatorBtnsClick: (btn: string) => void;
-}
+import './Components/Layout/Layout.css';
+import HomePage from './pages/HomePage/HomePage';
+import { IApiResp } from './api/Client';
 
 function App() {
   const safeJsonParse = (s: string) => {
@@ -43,8 +21,7 @@ function App() {
 
   const { pathname } = useLocation();
   const segments = pathname.split('/');
-
-  const [products, setProducts] = useState<ProductProps[]>([]);
+  const [data, setData] = useState<IApiResp | null>(null);
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
   const [err, setErr] = useState<Error | null | unknown>(null);
@@ -53,35 +30,31 @@ function App() {
   );
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(30);
-  const [totalProducts, setTotaProducts] = useState(0);
-  const [currPageNum, setCurrPageNum] = useState(Number(segments[2]) || 1);
-
-  if (
-    (segments.length >= 6 && segments[5] !== '') ||
-    (segments.length === 5 && segments[4] === '') ||
-    (segments.length === 4 && segments[3] !== 'productId')
-  ) {
-    setShowError(true);
-  }
+  const [currPageNum, setCurrPageNum] = useState(
+    (segments[1].length > 5 && Number(segments[1].slice(5))) || null
+  );
 
   const loadProducts = useCallback(
     async (
       searchQuery: string | null = searchParams,
       items: number = itemsPerPage,
-      currPageNum: number
+      currPageNum: number | null
     ) => {
-      setLoading(true);
+      if (currPageNum) {
+        setLoading(true);
 
-      try {
-        client('products', searchQuery, items, currPageNum).then((data) => {
-          setProducts(data.products);
-          setTotaProducts(data.total);
+        try {
+          client('products', searchQuery, items, currPageNum).then((data) => {
+            setData(data);
+            setLoading(false);
+          });
+        } catch (error) {
           setLoading(false);
-        });
-      } catch (error) {
-        setLoading(false);
+          setShowError(true);
+          setErr(error);
+        }
+      } else {
         setShowError(true);
-        setErr(error);
       }
     },
     [itemsPerPage, searchParams]
@@ -90,18 +63,10 @@ function App() {
   useEffect(() => {
     if (!isDataLoaded) {
       (async () => {
+        console.log(pathname);
         setIsDataLoaded(true);
-        const currPage = Number(segments[2]);
-        setCurrPageNum(currPage);
-
-        if (pathname.length === 1) {
-          navigate(`page/1`);
-          setCurrPageNum(1);
-          await loadProducts(searchParams, itemsPerPage, 1);
-        } else {
-          navigate(`${pathname}`);
-          await loadProducts(searchParams, itemsPerPage, currPage);
-        }
+        segments[1] === '' ? navigate(`page=1`) : navigate(`${pathname}`);
+        await loadProducts(searchParams, itemsPerPage, currPageNum);
       })();
     }
   }, [
@@ -116,6 +81,7 @@ function App() {
   ]);
 
   const handleSearch = async (searchQuery: string | null) => {
+    setShowError(false);
     setLoading(true);
     localStorage.savedSearch = JSON.stringify(searchQuery);
     setSearchParams(searchQuery);
@@ -141,55 +107,37 @@ function App() {
   };
 
   return (
-    <>
-      <Routes>
+    <Routes>
+      <Route path={`/`} element={<Layout handleTestError={handleTestError} />}>
         <Route
-          path={`/`}
-          element={<Layout handleTestError={handleTestError} />}
+          path={':page'}
+          element={
+            <HomePage
+              handleSearch={handleSearch}
+              searchParams={searchParams}
+              showError={showError}
+              err={err}
+              handlePaginatorBtnsClick={handlePaginatorBtnsClick}
+              data={data || { products: [], total: 0, skip: 0, limit: 0 }}
+              loading={loading}
+              currPageNumber={currPageNum}
+            />
+          }
         >
           <Route
-            path={'page/:pageNumber/*'}
+            path={':productId'}
             element={
-              <>
-                <main className="mainWrapper">
-                  <Search
-                    onSearch={handleSearch}
-                    prevSearchParams={searchParams}
-                  />
-
-                  {showError && <ErrorComponent err={err} />}
-                  {!showError && (
-                    <Pagination
-                      onPaginatorBtnsClick={handlePaginatorBtnsClick}
-                      totalProducts={totalProducts}
-                      loading={loading}
-                    />
-                  )}
-                  {loading && <div className="loading">Loading...</div>}
-                  {!loading && !showError && (
-                    <Data products={products} currPageNum={currPageNum} />
-                  )}
-                </main>
-                <Outlet />
-              </>
+              <ProductPage
+                products={data?.products || []}
+                getProducts={updateProducts}
+                loading={loading}
+              />
             }
-          >
-            <Route
-              path={'productId/:id'}
-              element={
-                <ProductPage
-                  products={products}
-                  getProducts={updateProducts}
-                  loading={loading}
-                />
-              }
-            />
-          </Route>
+          />
         </Route>
-
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </>
+      </Route>
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   );
 }
 

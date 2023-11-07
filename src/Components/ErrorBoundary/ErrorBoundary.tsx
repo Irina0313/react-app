@@ -28,7 +28,7 @@ class ErrorBoundary extends Component<Props, State> {
           <button
             className="errBoundaryBtn"
             onClick={() => {
-              window.location.replace('/page/1');
+              window.location.replace('/page=1');
             }}
           >
             Return to the Main Page

@@ -1,6 +1,7 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './Pagination.css';
 import { useState } from 'react';
+import useGetURLParams from '../../hooks/getURLParams';
 
 interface PaginationProps {
   onPaginatorBtnsClick: (pageNumber: number, items?: number) => void;
@@ -10,23 +11,23 @@ interface PaginationProps {
 
 function Pagination(props: PaginationProps) {
   const { onPaginatorBtnsClick, totalProducts, loading } = props;
-  const { pageNumber } = useParams();
+  const { pageNumber } = useGetURLParams();
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState(30);
   const lastPageNum = Math.ceil(totalProducts / selectedOption);
 
   const handleClick = (btn: string) => {
     if (btn === 'prev' && Number(pageNumber) > 1) {
-      navigate(`/page/${Number(pageNumber) - 1}`);
+      navigate(`/page=${Number(pageNumber) - 1}`);
       onPaginatorBtnsClick(Number(pageNumber) - 1, selectedOption);
     } else if (btn === 'next') {
-      navigate(`/page/${Number(pageNumber) + 1}`);
+      navigate(`/page=${Number(pageNumber) + 1}`);
       onPaginatorBtnsClick(Number(pageNumber) + 1, selectedOption);
     }
   };
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    navigate(`/page/1`);
+    navigate(`/page=1`);
     const selectedValue: number = Number(event.target.value);
     setSelectedOption(selectedValue);
     onPaginatorBtnsClick(1, selectedValue);

@@ -17,15 +17,6 @@ header {
   margin: 0;
 }
 
-.mainWrapper {
-  max-width: 1920px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  row-gap: 40px;
-}
-
 .titleWrapper {
   max-width: 1920px;
   display: flex;
@@ -52,6 +43,7 @@ header {
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     opacity: 0.1;
