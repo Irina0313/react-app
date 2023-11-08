@@ -1,13 +1,10 @@
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Search.css';
+import { SearchContext } from '../../context/context';
 
-interface SearchProps {
-  onSearch: (searchQuery: string | null) => void;
-  prevSearchParams: string | null;
-}
-
-function Search({ onSearch, prevSearchParams }: SearchProps) {
+function Search() {
+  const { onSearch, prevSearchParams } = useContext(SearchContext);
   const [currSearchParams, setCurrSearchParams] = useState(prevSearchParams);
 
   const navigate = useNavigate();

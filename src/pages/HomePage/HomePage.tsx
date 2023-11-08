@@ -5,16 +5,11 @@ import Data from '../../Components/Data/Data';
 import { IApiResp } from '../../api/Client';
 import './HomePage.css';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
+import { useContext } from 'react';
+import { LoadingContext, ProductsContext } from '../../context/context';
 
 export interface HomePageProps {
-  loading: boolean;
   showError: boolean;
-  err: Error | null | unknown;
-  data: IApiResp;
-
-  handleSearch: (searchQuery: string | null) => void;
-  searchParams: string | null;
-  currPageNumber: number | null;
   handlePaginatorBtnsClick: (
     pageNumber: number,
     items?: number | undefined
@@ -22,32 +17,21 @@ export interface HomePageProps {
 }
 
 function HomePage(props: HomePageProps) {
-  const {
-    handleSearch,
-    searchParams,
-    showError,
-    handlePaginatorBtnsClick,
-    data,
-    loading,
-    currPageNumber,
-  } = props;
+  const { showError, handlePaginatorBtnsClick } = props;
+
+  const data: IApiResp | null = useContext(ProductsContext);
+  const loading = useContext(LoadingContext);
 
   return (
     <>
       <main className="mainWrapper">
-        <Search onSearch={handleSearch} prevSearchParams={searchParams} />
-        {(showError || data.products.length === 0) && <NotFoundPage />}
-        {!showError && data.products.length > 0 && (
-          <Pagination
-            onPaginatorBtnsClick={handlePaginatorBtnsClick}
-            totalProducts={data.total}
-            loading={loading}
-          />
+        <Search />
+        {(showError || data?.products.length === 0) && <NotFoundPage />}
+        {!showError && data && data.products.length > 0 && (
+          <Pagination onPaginatorBtnsClick={handlePaginatorBtnsClick} />
         )}
         {loading && <div className="loading">Loading...</div>}
-        {!loading && !showError && (
-          <Data products={data.products} currPageNum={currPageNumber} />
-        )}
+        {!loading && !showError && <Data />}
       </main>
 
       {<Outlet />}

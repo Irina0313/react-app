@@ -1,5 +1,7 @@
+import { useContext } from 'react';
 import './Product.css';
 import ProductImage from './ProductImage';
+import { ProductsContext } from '../../context/context';
 
 export interface ProductProps {
   id: number;
@@ -15,21 +17,25 @@ export interface ProductProps {
   images: string[];
 }
 
-function Product(props: ProductProps) {
-  const { title, brand, category, price, images } = props;
+function Product(props: Partial<ProductProps>) {
+  const { id } = props;
+
+  const product = useContext(ProductsContext)?.products.filter(
+    (prod) => prod.id === id
+  )[0];
 
   const productDescriptionItems = [
-    { label: 'Brand', value: brand },
-    { label: 'Category', value: category },
-    { label: 'Price', value: price },
+    { label: 'Brand', value: product?.brand },
+    { label: 'Category', value: product?.category },
+    { label: 'Price', value: product?.price },
   ];
 
   return (
     <>
       <div className="productImageContainer">
-        <ProductImage productImgURL={images[0]} />
+        <ProductImage id={id} />
       </div>
-      <h2 className="productName">{title}</h2>
+      <h2 className="productName">{product?.title}</h2>
       <div className="productDescription">
         {productDescriptionItems.map((item) => (
           <p key={item.label} className="productDescriptionItem">

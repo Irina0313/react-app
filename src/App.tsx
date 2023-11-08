@@ -7,6 +7,11 @@ import client from './api/Client';
 import './Components/Layout/Layout.css';
 import HomePage from './pages/HomePage/HomePage';
 import { IApiResp } from './api/Client';
+import {
+  ProductsContext,
+  LoadingContext,
+  SearchContext,
+} from './context/context';
 
 function App() {
   const safeJsonParse = (s: string) => {
@@ -24,7 +29,6 @@ function App() {
   const [data, setData] = useState<IApiResp | null>(null);
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
-  const [err, setErr] = useState<Error | null | unknown>(null);
   const [searchParams, setSearchParams] = useState<string | null>(
     safeJsonParse(localStorage.savedSearch)
   );
@@ -51,7 +55,6 @@ function App() {
         } catch (error) {
           setLoading(false);
           setShowError(true);
-          setErr(error);
         }
       } else {
         setShowError(true);
@@ -63,7 +66,6 @@ function App() {
   useEffect(() => {
     if (!isDataLoaded) {
       (async () => {
-        console.log(pathname);
         setIsDataLoaded(true);
         segments[1] === '' ? navigate(`page=1`) : navigate(`${pathname}`);
         await loadProducts(searchParams, itemsPerPage, currPageNum);
@@ -107,37 +109,36 @@ function App() {
   };
 
   return (
-    <Routes>
-      <Route path={`/`} element={<Layout handleTestError={handleTestError} />}>
-        <Route
-          path={':page'}
-          element={
-            <HomePage
-              handleSearch={handleSearch}
-              searchParams={searchParams}
-              showError={showError}
-              err={err}
-              handlePaginatorBtnsClick={handlePaginatorBtnsClick}
-              data={data || { products: [], total: 0, skip: 0, limit: 0 }}
-              loading={loading}
-              currPageNumber={currPageNum}
-            />
-          }
-        >
-          <Route
-            path={':productId'}
-            element={
-              <ProductPage
-                products={data?.products || []}
-                getProducts={updateProducts}
-                loading={loading}
-              />
-            }
-          />
-        </Route>
-      </Route>
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+    <LoadingContext.Provider value={loading}>
+      <SearchContext.Provider
+        value={{ onSearch: handleSearch, prevSearchParams: searchParams }}
+      >
+        <ProductsContext.Provider value={data}>
+          <Routes>
+            <Route
+              path={`/`}
+              element={<Layout handleTestError={handleTestError} />}
+            >
+              <Route
+                path={':page'}
+                element={
+                  <HomePage
+                    showError={showError}
+                    handlePaginatorBtnsClick={handlePaginatorBtnsClick}
+                  />
+                }
+              >
+                <Route
+                  path={':productId'}
+                  element={<ProductPage getProducts={updateProducts} />}
+                />
+              </Route>
+            </Route>
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </ProductsContext.Provider>
+      </SearchContext.Provider>
+    </LoadingContext.Provider>
   );
 }
 

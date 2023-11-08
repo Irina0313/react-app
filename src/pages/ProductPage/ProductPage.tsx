@@ -1,23 +1,24 @@
-import { useEffect, useState } from 'react';
-import { ProductProps } from '../../Components/Data/Product';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useGetURLParams from '../../hooks/getURLParams';
 import './ProductPage.css';
 import ProductImage from '../../Components/Data/ProductImage';
+import { LoadingContext, ProductsContext } from '../../context/context';
 
 interface ProductPageProps {
-  products: ProductProps[];
   getProducts: () => void;
-  loading: boolean;
 }
 
 function ProductPage(props: ProductPageProps) {
-  const { products, getProducts, loading } = props;
+  const products = useContext(ProductsContext)?.products;
+  const loading = useContext(LoadingContext);
+
+  const { getProducts } = props;
+
   const navigate = useNavigate();
   const { pageNumber, id } = useGetURLParams();
-  const product = products.filter((product) => Number(product.id) === id)[0];
+  const product = products?.filter((product) => Number(product.id) === id)[0];
 
-  console.log(product);
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
@@ -56,10 +57,7 @@ function ProductPage(props: ProductPageProps) {
           <>
             <h2 className="modalTitle">{product.title}</h2>
             <div className="modalImageContainer">
-              <ProductImage
-                productImgURL={product.images[0]}
-                isModalImage={true}
-              />
+              <ProductImage id={product?.id} isModalImage={true} />
             </div>
             <h3>{`Category: ${product.category}`}</h3>
             <p className="modalDescription">{product.description}</p>
