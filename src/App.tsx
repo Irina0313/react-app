@@ -12,16 +12,9 @@ import {
   LoadingContext,
   SearchContext,
 } from './context/context';
+import safeJsonParse from './utils/JsonActions';
 
 function App() {
-  const safeJsonParse = (s: string) => {
-    try {
-      return JSON.parse(s);
-    } catch (e) {
-      return null;
-    }
-  };
-
   const navigate = useNavigate();
 
   const { pathname } = useLocation();
