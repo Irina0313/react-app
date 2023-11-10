@@ -28,6 +28,7 @@ function ProductImage(props: ProductImageProps) {
       alt="product image"
       className={`${isModalImage ? 'modalImage' : 'productImage'}`}
       onError={handleImageError}
+      data-testid={'productImage'}
     />
   );
 }

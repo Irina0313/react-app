@@ -7,23 +7,15 @@ const mockId = mockContext.products[0].id;
 const mockIsModalImage = false;
 
 describe('Product image tests', () => {
-  const { container } = render(
-    <ProductImage id={mockId} isModalImage={!mockIsModalImage}></ProductImage>
+  const { getByTestId } = render(
+    <ProductImage id={mockId} isModalImage={!mockIsModalImage} />
   );
-  const productImageElement = container.querySelector(
-    '.productImage'
-  ) as HTMLImageElement;
+  const productImageElement = getByTestId('productImage');
   test('image must have alt text', () => {
     const mockId = 20;
 
-    const { getAllByAltText } = render(
-      <ProductImage id={mockId}></ProductImage>
-    );
-    expect(getAllByAltText(/product image/i)).toBeTruthy();
-  });
-
-  test('image must have right class name', () => {
-    expect(productImageElement).toBeDefined();
+    const { getByAltText } = render(<ProductImage id={mockId} />);
+    expect(getByAltText(/product image/i)).toBeTruthy();
   });
 
   test('image must have right class name', () => {
@@ -52,24 +44,16 @@ describe('Product image tests', () => {
 });
 
 describe('products to be rigth filtered', () => {
-  let container: HTMLDivElement | null;
-  beforeEach(() => {
-    container = document.createElement('div');
-
-    document.body.appendChild(container);
-  });
-  afterEach(() => {
-    container && document.body.removeChild(container);
-    container = null;
-  });
-  test('it could be get context and filter products from it', () => {
-    render(
+  test('it could get context and filter products from it', () => {
+    const { getByTestId } = render(
       <ProductsContext.Provider value={mockContext}>
         <ProductImage id={mockId} isModalImage={mockIsModalImage} />
       </ProductsContext.Provider>
     );
-    const image = document.querySelector('img') as unknown as HTMLImageElement;
-    const exprctedSrc = mockContext.products[0].images[0];
-    expect(image.src).toEqual(exprctedSrc);
+
+    const image = getByTestId('productImage') as HTMLImageElement;
+    const expectedSrc = mockContext.products[0].images[0];
+
+    expect(image.src).toEqual(expectedSrc);
   });
 });
