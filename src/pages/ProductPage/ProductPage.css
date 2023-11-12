@@ -40,11 +40,6 @@
   transform: translateX(0);
 }
 
-.modalBackdrop.closed {
-  opacity: 0;
-  visibility: hidden;
-}
-
 .modalBackdrop.closed .modalContent {
   transform: translateX(100%);
 }

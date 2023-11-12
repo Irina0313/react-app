@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import './Product.css';
 import ProductImage from './ProductImage';
-import { ProductsContext } from '../../context/context';
+import { ProductsContext } from '../../context';
 
 export interface ProductProps {
   id: number;

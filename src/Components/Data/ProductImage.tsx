@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import './ProductImage.css';
-import { ProductsContext } from '../../context/context';
+import { ProductsContext } from '../../context';
 
 interface ProductImageProps {
   id: number | undefined;
@@ -28,6 +28,7 @@ function ProductImage(props: ProductImageProps) {
       alt="product image"
       className={`${isModalImage ? 'modalImage' : 'productImage'}`}
       onError={handleImageError}
+      data-testid={'productImage'}
     />
   );
 }
