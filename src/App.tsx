@@ -7,11 +7,7 @@ import client from './api/Client';
 import './Components/Layout/Layout.css';
 import HomePage from './pages/HomePage/HomePage';
 import { IApiResp } from './api/Client';
-import {
-  ProductsContext,
-  LoadingContext,
-  SearchContext,
-} from './context/context';
+import { ProductsContext, LoadingContext, SearchContext } from './context';
 import safeJsonParse from './utils/JsonActions';
 
 function App() {
@@ -38,18 +34,25 @@ function App() {
       currPageNum: number | null
     ) => {
       if (currPageNum) {
-        setLoading(true);
-
         try {
-          client('products', searchQuery, items, currPageNum).then((data) => {
-            setData(data);
-            setLoading(false);
-          });
+          setLoading(true);
+
+          const data = await client(
+            'products',
+            searchQuery,
+            items,
+            currPageNum
+          );
+          setLoading(false);
+
+          data && setData(data);
         } catch (error) {
+          console.error('catch ', error);
           setLoading(false);
           setShowError(true);
         }
       } else {
+        setLoading(false);
         setShowError(true);
       }
     },
@@ -60,8 +63,14 @@ function App() {
     if (!isDataLoaded) {
       (async () => {
         setIsDataLoaded(true);
-        segments[1] === '' ? navigate(`page=1`) : navigate(`${pathname}`);
-        await loadProducts(searchParams, itemsPerPage, currPageNum);
+        if (segments[1] === '') {
+          navigate(`page=1`);
+          setCurrPageNum(1);
+          await loadProducts(searchParams, itemsPerPage, 1);
+        } else {
+          navigate(`${pathname}`);
+          await loadProducts(searchParams, itemsPerPage, currPageNum);
+        }
       })();
     }
   }, [
@@ -78,7 +87,8 @@ function App() {
   const handleSearch = async (searchQuery: string | null) => {
     setShowError(false);
     setLoading(true);
-    localStorage.savedSearch = JSON.stringify(searchQuery);
+
+    localStorage.setItem('savedSearch', JSON.stringify(searchQuery));
     setSearchParams(searchQuery);
     await loadProducts(searchQuery, itemsPerPage, 1);
   };
@@ -92,6 +102,7 @@ function App() {
     items: number = 30
   ) => {
     setLoading(true);
+
     setItemsPerPage(items);
     setCurrPageNum(pageNumber);
     await loadProducts(searchParams, items, pageNumber);

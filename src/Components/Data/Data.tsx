@@ -2,13 +2,13 @@ import { useContext } from 'react';
 import './Data.css';
 import Product from './Product';
 import { Link } from 'react-router-dom';
-import { ProductsContext } from '../../context/context';
+import { ProductsContext } from '../../context';
 
 function Data() {
   const products = useContext(ProductsContext)?.products;
 
   return (
-    <section className="dataWrapper">
+    <section data-testid="dataSection" className="dataWrapper">
       <div className="productsWrapper">
         {products?.map((product) => (
           <Link

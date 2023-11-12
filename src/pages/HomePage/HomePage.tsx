@@ -6,7 +6,7 @@ import { IApiResp } from '../../api/Client';
 import './HomePage.css';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import { useContext } from 'react';
-import { LoadingContext, ProductsContext } from '../../context/context';
+import { LoadingContext, ProductsContext } from '../../context';
 
 export interface HomePageProps {
   showError: boolean;
@@ -26,7 +26,9 @@ function HomePage(props: HomePageProps) {
     <>
       <main className="mainWrapper">
         <Search />
-        {(showError || data?.products.length === 0) && <NotFoundPage />}
+        {(showError || data?.products.length === 0 || data === null) && (
+          <NotFoundPage />
+        )}
         {!showError && data && data.products.length > 0 && (
           <Pagination onPaginatorBtnsClick={handlePaginatorBtnsClick} />
         )}

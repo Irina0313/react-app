@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useGetURLParams from '../../hooks/getURLParams';
 import './ProductPage.css';
 import ProductImage from '../../Components/Data/ProductImage';
-import { LoadingContext, ProductsContext } from '../../context/context';
+import { LoadingContext, ProductsContext } from '../../context';
 
 interface ProductPageProps {
   getProducts: () => void;
@@ -45,13 +45,18 @@ function ProductPage(props: ProductPageProps) {
     }
   }, [id, getProducts, isDataLoaded]);
 
-  return (
+  return isModalOpen ? (
     <div
-      className={`modalBackdrop ${isModalOpen ? 'open' : 'closed'}`}
+      data-testid="modalBackdrop"
+      className={`modalBackdrop ${isModalOpen && 'open'}`}
       onClick={handleModalClick}
     >
       <div className="modalContent">
-        {loading && <div className="loading">Loading...</div>}
+        {loading && (
+          <div className="loading" data-testid="productPageLoader">
+            Loading...
+          </div>
+        )}
         {!loading && !product && <h2> Sorry... Nothing was found </h2>}
         {!loading && product && (
           <>
@@ -69,7 +74,7 @@ function ProductPage(props: ProductPageProps) {
         )}
       </div>
     </div>
-  );
+  ) : null;
 }
 
 export default ProductPage;

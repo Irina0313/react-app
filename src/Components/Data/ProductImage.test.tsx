@@ -1,7 +1,7 @@
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import ProductImage from './ProductImage';
-import { ProductsContext } from '../../context/context';
-import { mockContext } from '../../moks/mockContext';
+import { ProductsContext } from '../../context';
+import { mockContext } from '../../__mocks__/mockContext';
 
 const mockId = mockContext.products[0].id;
 const mockIsModalImage = false;
@@ -14,8 +14,8 @@ describe('Product image tests', () => {
   test('image must have alt text', () => {
     const mockId = 20;
 
-    const { getByAltText } = render(<ProductImage id={mockId} />);
-    expect(getByAltText(/product image/i)).toBeTruthy();
+    const { getAllByAltText } = render(<ProductImage id={mockId} />);
+    expect(getAllByAltText(/product image/i)).toBeTruthy();
   });
 
   test('image must have right class name', () => {

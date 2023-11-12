@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import './Pagination.css';
 import { useContext, useState } from 'react';
 import useGetURLParams from '../../hooks/getURLParams';
-import { LoadingContext, ProductsContext } from '../../context/context';
+import { LoadingContext, ProductsContext } from '../../context';
 
 interface PaginationProps {
   onPaginatorBtnsClick: (pageNumber: number, items?: number) => void;
@@ -36,7 +36,7 @@ function Pagination(props: PaginationProps) {
   };
 
   return (
-    <div className="paginationBtn">
+    <div data-testid="paginationComponent" className="paginationBtn">
       <button
         className="arrowBtn prevPageArrowBtn"
         onClick={() => handleClick('prev')}
@@ -44,7 +44,9 @@ function Pagination(props: PaginationProps) {
       >
         prev
       </button>
-      <div className="currPageNumber">{pageNumber}</div>
+      <div data-testid="currPageNumber" className="currPageNumber">
+        {pageNumber}
+      </div>
       <button
         className="arrowBtn nextPageArrowBtn"
         onClick={() => handleClick('next')}

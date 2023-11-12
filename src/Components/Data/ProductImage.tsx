@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import './ProductImage.css';
-import { ProductsContext } from '../../context/context';
+import { ProductsContext } from '../../context';
 
 interface ProductImageProps {
   id: number | undefined;

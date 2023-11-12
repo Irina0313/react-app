@@ -12,11 +12,12 @@ module.exports = {
  */
   testEnvironment: 'jsdom',
   testRegex: '(/src/.*\\.(test|spec))\\.tsx?$',
-
+  setupFiles: ['jest-localstorage-mock'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
 
   moduleNameMapper: {
     '\\.(css|less|sass|scss)$': '<rootDir>/__mocks__/styleMock.cjs',
     '\\.(gif|ttf|eot|svg)$': '<rootDir>/__mocks__/fileMock.cjs',
+    '^__mocks__\\\\(.*)$': '<rootDir>/__mocks__/$1',
   },
 };
