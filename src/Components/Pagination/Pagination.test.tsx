@@ -121,7 +121,6 @@ describe('Pagination tests, Make sure the component updates URL query parameter 
     await act(async () => {
       initializePage();
     });
-    screen.debug();
     const prevBtn = screen.getByRole('button', { name: 'prev' });
     fireEvent.click(prevBtn);
     waitFor(() => {
@@ -133,7 +132,6 @@ describe('Pagination tests, Make sure the component updates URL query parameter 
       initializePage();
     });
     fireEvent.click(prevBtn);
-    screen.debug();
     waitFor(() => {
       expect(mockHandleClick).toHaveBeenCalledWith('prev');
       expect(mockOnPaginatorBtnsClick).toHaveBeenCalledWith('prev');
@@ -141,8 +139,6 @@ describe('Pagination tests, Make sure the component updates URL query parameter 
       expect(screen.getByTestId('currPageNumber')).toHaveTextContent('1');
       expect(mockOnPaginatorBtnsClick).toHaveBeenCalled();
     });
-
-    screen.debug();
   });
 
   test('it should change the page number when the next button is clicked', async () => {
