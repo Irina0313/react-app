@@ -1,11 +1,11 @@
 import { Outlet } from 'react-router-dom';
+import { useContext } from 'react';
 import Search from '../../Components/Search/Search';
 import Pagination from '../../Components/Pagination/Pagination';
 import Data from '../../Components/Data/Data';
 import { IApiResp } from '../../api/Client';
 import './HomePage.css';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
-import { useContext } from 'react';
 import { LoadingContext, ProductsContext } from '../../context';
 
 export interface HomePageProps {

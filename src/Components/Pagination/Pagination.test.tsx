@@ -6,8 +6,8 @@ import {
   act,
 } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import Pagination from './Pagination';
 import '@testing-library/jest-dom';
+import Pagination from './Pagination';
 import { ProductsContext } from '../../context';
 import { mockContext } from '../../__mocks__/mockContext';
 import { LoadingContext } from '../../context';
@@ -18,16 +18,17 @@ jest.mock('../../hooks/getURLParams', () => ({
 }));
 
 describe('Pagination component', () => {
-  it('renders without crashing', () => {
+  test('renders without crashing', () => {
     render(
       <BrowserRouter>
         <Pagination onPaginatorBtnsClick={() => {}} />
       </BrowserRouter>
     );
+
     expect(screen.getByTestId('paginationComponent')).toBeTruthy();
   });
 
-  it('handles prev or next button click correctly', async () => {
+  test('handles prev or next button click correctly', async () => {
     const onPaginatorBtnsClickMock = jest.fn();
     render(
       <BrowserRouter>
@@ -41,12 +42,12 @@ describe('Pagination component', () => {
     await waitFor(() => {
       expect(onPaginatorBtnsClickMock).toHaveBeenCalledWith(2, 30);
     });
-
     fireEvent.click(screen.getByText('prev'));
+
     expect(onPaginatorBtnsClickMock).toHaveBeenCalled();
   });
 
-  it('handles select change correctly', () => {
+  test('handles select change correctly', () => {
     const onPaginatorBtnsClickMock = jest.fn();
     render(
       <BrowserRouter>
@@ -58,7 +59,7 @@ describe('Pagination component', () => {
     expect(onPaginatorBtnsClickMock).toHaveBeenCalledWith(1, 10);
   });
 
-  it('disables prev button on the first page', () => {
+  test('disables prev button on the first page', () => {
     render(
       <BrowserRouter>
         <Pagination onPaginatorBtnsClick={() => {}} />
@@ -68,8 +69,9 @@ describe('Pagination component', () => {
     expect(screen.getByText('prev')).toBeDisabled();
   });
 
-  it('renders the correct current page number', () => {
+  test('renders the correct current page number', () => {
     const onPaginatorBtnsClickMock = jest.fn();
+
     render(
       <BrowserRouter>
         <Pagination onPaginatorBtnsClick={onPaginatorBtnsClickMock} />
@@ -106,10 +108,12 @@ describe('Pagination tests, Make sure the component updates URL query parameter 
     await act(async () => {
       initializePage();
     });
+
     const nextBtn = screen.getByRole('button', { name: 'next' });
     const prevBtn = screen.getByRole('button', { name: 'prev' });
     const currPage = screen.getByTestId('currPageNumber');
     const itemsPerPage = screen.getByRole('combobox');
+
     expect(nextBtn).toBeTruthy();
     expect(prevBtn).toBeTruthy();
     expect(currPage).toBeTruthy();
@@ -121,8 +125,10 @@ describe('Pagination tests, Make sure the component updates URL query parameter 
     await act(async () => {
       initializePage();
     });
+
     const prevBtn = screen.getByRole('button', { name: 'prev' });
     fireEvent.click(prevBtn);
+
     waitFor(() => {
       expect(mockHandleClick).toHaveBeenCalledWith('prev');
       expect(mockOnPaginatorBtnsClick).not.toHaveBeenCalled();
@@ -131,7 +137,9 @@ describe('Pagination tests, Make sure the component updates URL query parameter 
     await act(async () => {
       initializePage();
     });
+
     fireEvent.click(prevBtn);
+
     waitFor(() => {
       expect(mockHandleClick).toHaveBeenCalledWith('prev');
       expect(mockOnPaginatorBtnsClick).toHaveBeenCalledWith('prev');
@@ -185,6 +193,7 @@ describe('Pagination tests, Make sure the component updates URL query parameter 
         </LoadingContext.Provider>
       </BrowserRouter>
     );
+
     const prevBtn = screen.getByRole('button', { name: 'prev' });
     expect(prevBtn).toBeDisabled();
     const nextBtn = screen.getByRole('button', { name: 'next' });

@@ -1,6 +1,6 @@
-import Data from './Data';
 import { BrowserRouter } from 'react-router-dom';
 import { render, screen, waitFor, act } from '@testing-library/react';
+import Data from './Data';
 import { mockContext } from '../../__mocks__/mockContext';
 import { ProductsContext } from '../../context';
 

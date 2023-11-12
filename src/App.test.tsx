@@ -5,12 +5,12 @@ import {
   waitFor,
   fireEvent,
 } from '@testing-library/react';
-import App from './App';
+import '@testing-library/jest-dom';
 import { BrowserRouter } from 'react-router-dom';
+import App from './App';
 import { SearchContext, LoadingContext, ProductsContext } from './context';
 import { mockContext } from './__mocks__/mockContext';
 import { mockSetItem } from './__mocks__/mockLocalStorage';
-import '@testing-library/jest-dom';
 
 export let isMockServerError = false;
 export let isMockServerNoDataResponse = false;
@@ -50,9 +50,11 @@ describe('App tests', () => {
   test('it should display right page numder and items per page when users use pagination', async () => {
     isMockServerError = false;
     mockSearchParams = '';
+
     await act(async () => {
       initializePage();
     });
+
     await waitFor(() => {
       const nextBtn = screen.getByText(/next/i);
       const prevBtn = screen.getByText(/prev/i);
@@ -60,9 +62,11 @@ describe('App tests', () => {
 
       expect(itemsPerPage).toBeTruthy();
       fireEvent.select(itemsPerPage, { value: '10' });
+
       waitFor(() => {
         expect(screen.getByDisplayValue('10')).toBeTruthy();
       });
+
       expect(prevBtn).toBeDisabled();
       expect(prevBtn).toBeTruthy();
       fireEvent.click(prevBtn);
@@ -77,10 +81,12 @@ describe('App tests', () => {
     await act(async () => {
       initializePage();
     });
+
     await waitFor(() => {
       const testPageLink = screen.getAllByRole('link')[0];
       expect(testPageLink).toBeTruthy();
       fireEvent.click(testPageLink);
+
       waitFor(() => {
         expect(mockUpdateProducts).toHaveBeenCalled();
       });
@@ -91,10 +97,12 @@ describe('App tests', () => {
     await act(async () => {
       initializePage();
     });
+
     await waitFor(() => {
       const testPageLink = screen.getAllByRole('link')[0];
       expect(testPageLink).toBeTruthy();
       fireEvent.click(testPageLink);
+
       waitFor(() => {
         const detailedPage = screen.getByTestId('modalBackdrop');
         expect(detailedPage).toBeTruthy();

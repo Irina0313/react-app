@@ -10,11 +10,12 @@ describe('Product image tests', () => {
   const { getByTestId } = render(
     <ProductImage id={mockId} isModalImage={!mockIsModalImage} />
   );
+
   const productImageElement = getByTestId('productImage');
   test('image must have alt text', () => {
     const mockId = 20;
-
     const { getAllByAltText } = render(<ProductImage id={mockId} />);
+
     expect(getAllByAltText(/product image/i)).toBeTruthy();
   });
 

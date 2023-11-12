@@ -1,10 +1,10 @@
-import ProductPage from './ProductPage';
-import { LoadingContext, ProductsContext } from '../../context';
-import { mockContext } from '../../__mocks__/mockContext';
 import '@testing-library/jest-dom';
 import { screen } from '@testing-library/dom';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import ProductPage from './ProductPage';
+import { LoadingContext, ProductsContext } from '../../context';
+import { mockContext } from '../../__mocks__/mockContext';
 
 jest.mock('../../hooks/getURLParams', () => {
   return () => ({
@@ -33,12 +33,14 @@ describe('Product page tests', () => {
     mockLoaderValue = true;
     initializePage();
     const loaderText = screen.getByText(/Loading.../i);
+
     expect(loaderText).toBeTruthy();
   });
   test('if LoadingContext has value false, loader should not be displayed', () => {
     mockLoaderValue = false;
     initializePage();
     const loaderText = screen.queryByText('Loading...');
+
     expect(loaderText).toBeNull();
   });
   test('Make sure the detailed card component correctly displays the detailed card data;', () => {
@@ -53,6 +55,7 @@ describe('Product page tests', () => {
     });
 
     const productImage = screen.queryAllByRole('img');
+
     const productDescription = screen.getByText(
       mockContext.products[0].description
     );
@@ -110,6 +113,7 @@ describe('Product page tests', () => {
     );
 
     const sorryMessage = screen.queryByText('Sorry... Nothing was found');
+
     expect(sorryMessage).toBeTruthy();
   });
 });

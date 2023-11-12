@@ -1,8 +1,8 @@
-import HomePage from './HomePage';
 import { render, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import { screen } from '@testing-library/dom';
+import HomePage from './HomePage';
 import { LoadingContext } from '../../context';
 import { ProductsContext } from '../../context';
 import { mockContext } from '../../__mocks__/mockContext';
@@ -32,12 +32,14 @@ describe('Home Page tests', () => {
     const select = screen.getByRole('combobox');
     fireEvent.change(select, { target: { value: 40 } });
     const displayedValue = screen.getByDisplayValue(40);
+
     expect(displayedValue).toBeTruthy();
   });
   test('Check that an appropriate message is displayed if no cards are present.', () => {
     mockShowError = false;
     inizializePage(loading, null);
     const notFoundPageTitle = screen.getByText('Page was not found');
+
     expect(notFoundPageTitle).toBeTruthy();
   });
 
@@ -45,6 +47,7 @@ describe('Home Page tests', () => {
     mockShowError = true;
     inizializePage(loading, mockContext);
     const notFoundPageTitle = screen.getByText('Page was not found');
+
     expect(notFoundPageTitle).toBeTruthy();
   });
 

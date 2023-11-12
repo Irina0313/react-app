@@ -1,7 +1,7 @@
 import { useState, FormEvent, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Search.css';
 import { SearchContext } from '../../context';
+import './Search.css';
 
 function Search() {
   const { onSearch, prevSearchParams } = useContext(SearchContext);

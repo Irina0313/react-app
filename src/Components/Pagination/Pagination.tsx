@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import './Pagination.css';
 import { useContext, useState } from 'react';
 import useGetURLParams from '../../hooks/getURLParams';
 import { LoadingContext, ProductsContext } from '../../context';
+import './Pagination.css';
 
 interface PaginationProps {
   onPaginatorBtnsClick: (pageNumber: number, items?: number) => void;

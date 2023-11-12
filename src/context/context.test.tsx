@@ -1,6 +1,6 @@
-import { ProductsContext, SearchContext } from '.';
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import { ProductsContext, SearchContext } from '.';
 
 test('ProductsContext is a valid React context', () => {
   expect(ProductsContext.Provider).toBeDefined();
@@ -15,6 +15,7 @@ test('Default value of ProductsContext is null', () => {
       </ProductsContext.Provider>
     </BrowserRouter>
   );
+
   expect(container.firstChild).toBeNull();
 });
 
