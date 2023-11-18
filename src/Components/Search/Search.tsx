@@ -1,12 +1,17 @@
-import { useState, FormEvent, useContext } from 'react';
+import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SearchContext } from '../../context';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxsHooks';
+import { updateSearchRequest } from '../../store/searchSlice';
 import './Search.css';
 
 function Search() {
-  const { onSearch, prevSearchParams } = useContext(SearchContext);
-  const [currSearchParams, setCurrSearchParams] = useState(prevSearchParams);
-
+  const dispatch = useAppDispatch();
+  const initialSearch = useAppSelector(
+    (state) => state.searchRequest.searchRequest
+  );
+  const [currSearchParams, setCurrSearchParams] = useState<string | null>(
+    initialSearch
+  );
   const navigate = useNavigate();
 
   const updateSavedSearch = (value: string) => {
@@ -16,7 +21,7 @@ function Search() {
   const handleSearch = async (e: FormEvent) => {
     e.preventDefault();
     navigate(`/page=1`);
-    onSearch(currSearchParams);
+    dispatch(updateSearchRequest(currSearchParams));
   };
 
   return (

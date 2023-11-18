@@ -1,11 +1,14 @@
-import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import './Data.css';
 import Product from './Product';
-import { ProductsContext } from '../../context';
+import { IApiResp } from '../../store/productsAPI';
+interface IDataProps {
+  data: IApiResp | undefined;
+}
 
-function Data() {
-  const products = useContext(ProductsContext)?.products;
+function Data(props: IDataProps) {
+  const { data } = props;
+  const products = data?.products;
 
   return (
     <section data-testid="dataSection" className="dataWrapper">
@@ -16,7 +19,7 @@ function Data() {
             key={product.id}
             className="productWrapper"
           >
-            <Product id={product.id} />
+            <Product {...product} />
           </Link>
         ))}
       </div>

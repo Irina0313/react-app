@@ -1,38 +1,44 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useContext, useState } from 'react';
 import useGetURLParams from '../../hooks/getURLParams';
-import { LoadingContext, ProductsContext } from '../../context';
+import useGetCurrentStateParams from '../../hooks/getCurrentStateParams';
+import { changeItemsPerPage } from '../../store/paginationSlice';
+import { useAppDispatch } from '../../hooks/reduxsHooks';
+import { useGetProductsQuery } from '../../store/productsAPI';
 import './Pagination.css';
 
-interface PaginationProps {
-  onPaginatorBtnsClick: (pageNumber: number, items?: number) => void;
-}
-
-function Pagination(props: PaginationProps) {
-  const { onPaginatorBtnsClick } = props;
-  const loading = useContext(LoadingContext);
-  const { pageNumber } = useGetURLParams();
+function Pagination() {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [selectedOption, setSelectedOption] = useState(30);
-  const totalProducts = Number(useContext(ProductsContext)?.total);
-  const lastPageNum =
-    totalProducts && Math.ceil(totalProducts / selectedOption);
+
+  const pageNumber = Number(useGetURLParams().pageNumber);
+  const [currPageNum, setCurrPageNum] = useState(pageNumber || 1);
+  const { itemsPerPage, searchRequest } = useGetCurrentStateParams();
+
+  const { data, isFetching } = useGetProductsQuery({
+    currPageNumber: currPageNum,
+    itemsPerPage: itemsPerPage,
+    searchRequest: searchRequest,
+  });
+
+  const totalProducts = Number(data?.total);
+  const lastPageNum = totalProducts && Math.ceil(totalProducts / itemsPerPage);
 
   const handleClick = (btn: string) => {
-    if (btn === 'prev' && Number(pageNumber) > 1) {
-      navigate(`/page=${Number(pageNumber) - 1}`);
-      onPaginatorBtnsClick(Number(pageNumber) - 1, selectedOption);
+    if (btn === 'prev' && currPageNum > 1) {
+      navigate(`/page=${currPageNum - 1}`);
+      setCurrPageNum(currPageNum - 1);
     } else if (btn === 'next') {
-      navigate(`/page=${Number(pageNumber) + 1}`);
-      onPaginatorBtnsClick(Number(pageNumber) + 1, selectedOption);
+      navigate(`/page=${currPageNum + 1}`);
+      setCurrPageNum(currPageNum + 1);
     }
   };
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     navigate(`/page=1`);
     const selectedValue: number = Number(event.target.value);
-    setSelectedOption(selectedValue);
-    onPaginatorBtnsClick(1, selectedValue);
+    setCurrPageNum(1);
+    dispatch(changeItemsPerPage(selectedValue));
   };
 
   return (
@@ -40,26 +46,26 @@ function Pagination(props: PaginationProps) {
       <button
         className="arrowBtn prevPageArrowBtn"
         onClick={() => handleClick('prev')}
-        disabled={Number(pageNumber) === 1 || loading}
+        disabled={currPageNum === 1 || isFetching}
       >
         prev
       </button>
       <div data-testid="currPageNumber" className="currPageNumber">
-        {pageNumber}
+        {pageNumber || currPageNum}
       </div>
       <button
         className="arrowBtn nextPageArrowBtn"
         onClick={() => handleClick('next')}
-        disabled={lastPageNum === Number(pageNumber) || loading}
+        disabled={lastPageNum === currPageNum || isFetching}
       >
         next
       </button>
       <select
         className="cardsQuantity"
         name="cardsQuantity"
-        defaultValue={`${selectedOption}`}
+        defaultValue={`${itemsPerPage}`}
         onChange={handleOptionChange}
-        disabled={loading}
+        disabled={isFetching}
       >
         <option value="5">5</option>
         <option value="10">10</option>
