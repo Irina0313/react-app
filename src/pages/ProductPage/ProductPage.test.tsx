@@ -81,9 +81,9 @@ describe('Product page tests', () => {
     expect(productModal).toBeTruthy();
     expect(productModal).toHaveClass('open');
 
-    const closeBtn = screen.getByRole('button');
+    const closeBtn = screen.getAllByRole('button');
 
-    fireEvent.click(closeBtn);
+    fireEvent.click(closeBtn[0]);
 
     waitFor(
       () => {

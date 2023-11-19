@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/reduxsHooks';
 import useGetURLParams from '../../hooks/getURLParams';
 import ProductImage from '../../Components/Data/ProductImage';
@@ -10,9 +10,12 @@ import './ProductPage.css';
 function ProductPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const urlParams = useParams();
+  const isRightURL = urlParams.productId?.slice(0, 10) === 'productId=';
+
   const { pageNumber, id } = useGetURLParams();
 
-  const { data, isFetching, isLoading } = useGetProductByIdQuery({
+  const { data, isFetching, isLoading, isError } = useGetProductByIdQuery({
     productId: id,
   });
 
@@ -49,7 +52,7 @@ function ProductPage() {
             Loading...
           </div>
         )}
-        {!isFetching && !data && (
+        {!isFetching && (!isRightURL || !data || isError) && (
           <>
             <h2> Sorry... Nothing was found </h2>
             <button className="notFoundPageBtn" onClick={handleCloseBtnClick}>
