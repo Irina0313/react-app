@@ -47,7 +47,7 @@ function ProductPage() {
       onClick={handleModalClick}
     >
       <div className="modalContent">
-        {isFetching && (
+        {(isFetching || isLoading) && (
           <div className="loading" data-testid="productPageLoader">
             Loading...
           </div>
