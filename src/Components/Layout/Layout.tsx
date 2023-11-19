@@ -18,7 +18,6 @@ function Layout() {
 
   useEffect(() => {
     if (isFirstLoad && !urlParams.page) {
-      console.log('dd');
       navigate('/page=1');
       setIsFirstLoad(false);
     }

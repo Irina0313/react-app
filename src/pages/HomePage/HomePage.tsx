@@ -33,9 +33,13 @@ function HomePage() {
         {(isError || pageNumber === 0 || data?.products.length === 0) && (
           <NotFoundPage />
         )}
-        {!isError && data && data?.products.length > 0 && <Pagination />}
-        {isFetching && <div className="loading">Loading...</div>}
-        {!isFetching && !isError && <Data data={data} />}
+        {!isError && data && data?.products.length > 0 && pageNumber !== 0 && (
+          <Pagination />
+        )}
+        {isFetching && pageNumber !== 0 && (
+          <div className="loading">Loading...</div>
+        )}
+        {!isFetching && !isError && pageNumber !== 0 && <Data data={data} />}
       </main>
 
       {<Outlet />}

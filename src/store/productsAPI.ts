@@ -8,7 +8,7 @@ export interface IApiResp {
   limit: number;
 }
 
-interface IGetProducts {
+export interface IGetProducts {
   searchRequest: string | null;
   itemsPerPage: number;
   currPageNumber: number;
