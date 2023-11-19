@@ -1,17 +1,17 @@
 import { BrowserRouter } from 'react-router-dom';
-import { render, screen, waitFor, act } from '@testing-library/react';
+import { render, screen, waitFor, act, cleanup } from '@testing-library/react';
 import Data from './Data';
-import { mockContext } from '../../__mocks__/mockContext';
-import { ProductsContext } from '../../context';
+import { mockData } from '../../__mocks__/mockData';
 
+afterEach(() => {
+  cleanup();
+});
 describe('Data tests', () => {
   function initializePage() {
     jest.clearAllMocks();
     render(
       <BrowserRouter>
-        <ProductsContext.Provider value={mockContext}>
-          <Data />
-        </ProductsContext.Provider>
+        <Data data={mockData} />
       </BrowserRouter>
     );
   }
@@ -27,8 +27,9 @@ describe('Data tests', () => {
       initializePage();
     });
     await waitFor(() => {
+      const mockProductsLength = mockData.products.length;
       const cards = screen.getAllByRole('link');
-      expect(cards.length).toBe(cards.length);
+      expect(cards.length).toBe(mockProductsLength);
     });
   });
 });

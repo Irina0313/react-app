@@ -4,15 +4,11 @@ module.exports = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
+  setupFiles: ['jest-localstorage-mock', './jest.setup.ts'],
 
-  /*   setupFilesAfterEnv: [
-    '@testing-library/react/cleanup-after-each',
-    '@testing-library/jest-dom/extend-expect',
-  ],
- */
   testEnvironment: 'jsdom',
-  testRegex: '(/src/.*\\.(test|spec))\\.tsx?$',
-  setupFiles: ['jest-localstorage-mock'],
+  testRegex: '(/src/(?!mocks).*\\.(test|spec))\\.tsx?$',
+
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
 
   moduleNameMapper: {
@@ -20,4 +16,11 @@ module.exports = {
     '\\.(gif|ttf|eot|svg)$': '<rootDir>/__mocks__/fileMock.cjs',
     '^__mocks__\\\\(.*)$': '<rootDir>/__mocks__/$1',
   },
+  collectCoverageFrom: [
+    'src/**/*.{ts,tsx}',
+    '!src/mocks/**/*.{ts,tsx}',
+    '!src/main.tsx',
+    '!src/globals.d.ts',
+    '!src/vite-env.d.ts',
+  ],
 };

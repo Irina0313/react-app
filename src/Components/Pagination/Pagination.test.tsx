@@ -4,107 +4,64 @@ import {
   fireEvent,
   waitFor,
   act,
+  cleanup,
 } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
+import { Provider } from 'react-redux';
+import { store } from '../../store';
 import Pagination from './Pagination';
-import { ProductsContext } from '../../context';
-import { mockContext } from '../../__mocks__/mockContext';
-import { LoadingContext } from '../../context';
+import { mockData } from '../../__mocks__/mockData';
+import { IApiResp } from '../../store/productsAPI';
 
-jest.mock('../../hooks/getURLParams', () => ({
-  __esModule: true,
-  default: jest.fn(() => ({ pageNumber: '1' })),
+const data: IApiResp = mockData;
+let isLoading = false;
+
+jest.mock('../../store/productsAPI', () => ({
+  ...jest.requireActual('../../store/productsAPI'),
+  useGetCurrentStateParams: jest.fn(() => ({
+    itemsPerPage: 30,
+    searchRequest: '',
+  })),
 }));
 
+jest.mock('../../store/productsAPI', () => ({
+  ...jest.requireActual('../../store/productsAPI'),
+  useGetProductsQuery: jest.fn(() => ({
+    data: data,
+    isFetching: isLoading,
+    isLoading: isLoading,
+    isError: false,
+  })),
+}));
+
+function initializePage() {
+  jest.clearAllMocks();
+  render(
+    <BrowserRouter>
+      <Provider store={store}>
+        <Pagination />
+      </Provider>
+    </BrowserRouter>
+  );
+}
+
+afterEach(() => {
+  cleanup();
+});
+
 describe('Pagination component', () => {
-  test('renders without crashing', () => {
-    render(
-      <BrowserRouter>
-        <Pagination onPaginatorBtnsClick={() => {}} />
-      </BrowserRouter>
-    );
+  test('renders without crashing', async () => {
+    await act(async () => {
+      initializePage();
+    });
 
     expect(screen.getByTestId('paginationComponent')).toBeTruthy();
   });
 
-  test('handles prev or next button click correctly', async () => {
-    const onPaginatorBtnsClickMock = jest.fn();
-    render(
-      <BrowserRouter>
-        <ProductsContext.Provider value={mockContext}>
-          <Pagination onPaginatorBtnsClick={onPaginatorBtnsClickMock} />
-        </ProductsContext.Provider>
-      </BrowserRouter>
-    );
-
-    fireEvent.click(screen.getByText('next'));
-    await waitFor(() => {
-      expect(onPaginatorBtnsClickMock).toHaveBeenCalledWith(2, 30);
-    });
-    fireEvent.click(screen.getByText('prev'));
-
-    expect(onPaginatorBtnsClickMock).toHaveBeenCalled();
-  });
-
-  test('handles select change correctly', () => {
-    const onPaginatorBtnsClickMock = jest.fn();
-    render(
-      <BrowserRouter>
-        <Pagination onPaginatorBtnsClick={onPaginatorBtnsClickMock} />
-      </BrowserRouter>
-    );
-
-    fireEvent.change(screen.getByRole('combobox'), { target: { value: '10' } });
-    expect(onPaginatorBtnsClickMock).toHaveBeenCalledWith(1, 10);
-  });
-
-  test('disables prev button on the first page', () => {
-    render(
-      <BrowserRouter>
-        <Pagination onPaginatorBtnsClick={() => {}} />
-      </BrowserRouter>
-    );
-
-    expect(screen.getByText('prev')).toBeDisabled();
-  });
-
-  test('renders the correct current page number', () => {
-    const onPaginatorBtnsClickMock = jest.fn();
-
-    render(
-      <BrowserRouter>
-        <Pagination onPaginatorBtnsClick={onPaginatorBtnsClickMock} />
-      </BrowserRouter>
-    );
-
-    expect(screen.getByTestId('currPageNumber')).toHaveTextContent('1');
-  });
-});
-
-describe('Pagination tests, Make sure the component updates URL query parameter when page changes', () => {
-  jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useNavigate: jest.fn(),
-  }));
-
-  const mockOnPaginatorBtnsClick = jest.fn();
-  const { navigate } = require('react-router-dom');
-  let loading = false;
-  const mockHandleClick = jest.fn();
-
-  function initializePage() {
-    jest.clearAllMocks();
-    render(
-      <BrowserRouter>
-        <LoadingContext.Provider value={loading}>
-          <Pagination onPaginatorBtnsClick={mockOnPaginatorBtnsClick} />
-        </LoadingContext.Provider>
-      </BrowserRouter>
-    );
-  }
-
   test('Pagination is rendered', async () => {
+    isLoading = false;
+
     await act(async () => {
       initializePage();
     });
@@ -120,6 +77,46 @@ describe('Pagination tests, Make sure the component updates URL query parameter 
     expect(itemsPerPage).toBeTruthy();
     expect(screen.getByDisplayValue('30')).toBeTruthy();
   });
+  test('handles select change correctly', async () => {
+    const onPaginatorBtnsClickMock = jest.fn();
+
+    await act(async () => {
+      initializePage();
+    });
+
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: '10' } });
+
+    waitFor(() => {
+      expect(onPaginatorBtnsClickMock).toHaveBeenCalledWith(1, 10);
+    });
+  });
+
+  test('disables prev button on the first page', async () => {
+    await act(async () => {
+      initializePage();
+    });
+
+    expect(screen.getByText('prev')).toBeDisabled();
+  });
+
+  test('renders the correct current page number', async () => {
+    await act(async () => {
+      initializePage();
+    });
+
+    expect(screen.getByTestId('currPageNumber')).toHaveTextContent('1');
+  });
+});
+
+describe('Pagination tests, Make sure the component updates URL query parameter when page changes', () => {
+  jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: jest.fn(),
+  }));
+
+  const mockOnPaginatorBtnsClick = jest.fn();
+  const { navigate } = require('react-router-dom');
+  const mockHandleClick = jest.fn();
 
   test('it should change the page number when the prev button is clicked', async () => {
     await act(async () => {
@@ -183,16 +180,12 @@ describe('Pagination tests, Make sure the component updates URL query parameter 
     });
   });
 
-  test('buttons and select input should be disabled if data is loading ', () => {
-    loading = true;
+  test('buttons and select input should be disabled if data is loading ', async () => {
+    isLoading = true;
 
-    render(
-      <BrowserRouter>
-        <LoadingContext.Provider value={loading}>
-          <Pagination onPaginatorBtnsClick={mockOnPaginatorBtnsClick} />
-        </LoadingContext.Provider>
-      </BrowserRouter>
-    );
+    await act(async () => {
+      initializePage();
+    });
 
     const prevBtn = screen.getByRole('button', { name: 'prev' });
     expect(prevBtn).toBeDisabled();
@@ -200,7 +193,33 @@ describe('Pagination tests, Make sure the component updates URL query parameter 
     expect(nextBtn).toBeDisabled();
     const itemsPerPage = screen.getByRole('combobox');
     expect(itemsPerPage).toBeDisabled();
+  });
 
-    loading = false;
+  test('it should display right page numder and items per page when users use pagination', async () => {
+    await act(async () => {
+      initializePage();
+    });
+
+    const nextBtn = screen.getByText(/next/i);
+    const prevBtn = screen.getByText(/prev/i);
+    const itemsPerPage = screen.getByRole('combobox');
+
+    expect(itemsPerPage).toBeTruthy();
+    fireEvent.select(itemsPerPage, { value: '10' });
+
+    waitFor(() => {
+      expect(screen.getByDisplayValue('10')).toBeTruthy();
+    });
+
+    expect(prevBtn).toBeDisabled();
+    expect(prevBtn).toBeTruthy();
+    fireEvent.click(prevBtn);
+    expect(screen.getByTestId('currPageNumber')).toHaveTextContent('1');
+    expect(nextBtn).toBeTruthy();
+    fireEvent.click(nextBtn);
+
+    waitFor(() => {
+      expect(screen.getByTestId('currPageNumber')).toHaveTextContent('2');
+    });
   });
 });

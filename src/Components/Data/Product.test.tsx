@@ -1,16 +1,17 @@
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Product from './Product';
-import { mockContext } from '../../__mocks__/mockContext';
-import { ProductsContext } from '../../context';
+import { mockData } from '../../__mocks__/mockData';
 
+afterEach(() => {
+  cleanup();
+});
 describe('Product component', () => {
-  it('Ensure that the card component renders the relevant card data', () => {
+  const product = mockData.products[0];
+  test('Ensure that the card component renders the relevant card data', () => {
     render(
       <BrowserRouter>
-        <ProductsContext.Provider value={mockContext}>
-          <Product id={20} />
-        </ProductsContext.Provider>
+        <Product {...product} />
       </BrowserRouter>
     );
 
