@@ -1,5 +1,9 @@
+import { cleanup } from '@testing-library/react';
 import safeJsonParse from './JsonActions';
 
+afterEach(() => {
+  cleanup();
+});
 test('safeJsonParse should parse valid JSON', () => {
   const validJSON = '{"key": "value"}';
   expect(safeJsonParse(validJSON)).toEqual({ key: 'value' });

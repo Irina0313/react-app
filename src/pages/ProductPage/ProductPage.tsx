@@ -1,26 +1,26 @@
-import { useContext, useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks/reduxsHooks';
 import useGetURLParams from '../../hooks/getURLParams';
-import './ProductPage.css';
 import ProductImage from '../../Components/Data/ProductImage';
-import { LoadingContext, ProductsContext } from '../../context';
+import { updateProductPageLoadingFlag } from '../../store/loadingStateSlice';
+import { useGetProductByIdQuery } from '../../store/productsAPI';
+import './ProductPage.css';
 
-interface ProductPageProps {
-  getProducts: () => void;
-}
-
-function ProductPage(props: ProductPageProps) {
-  const products = useContext(ProductsContext)?.products;
-  const loading = useContext(LoadingContext);
-
-  const { getProducts } = props;
-
+function ProductPage() {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { pageNumber, id } = useGetURLParams();
-  const product = products?.filter((product) => Number(product.id) === id)[0];
+
+  const { data, isFetching, isLoading } = useGetProductByIdQuery({
+    productId: id,
+  });
+
+  useEffect(() => {
+    dispatch(updateProductPageLoadingFlag(isLoading));
+  }, [dispatch, isLoading]);
 
   const [isModalOpen, setIsModalOpen] = useState(true);
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target instanceof HTMLDivElement) {
@@ -37,14 +37,6 @@ function ProductPage(props: ProductPageProps) {
     navigate(`/page=${pageNumber}`);
   };
 
-  useEffect(() => {
-    id && setIsModalOpen(true);
-    if (!isDataLoaded) {
-      setIsDataLoaded(true);
-      getProducts();
-    }
-  }, [id, getProducts, isDataLoaded]);
-
   return isModalOpen ? (
     <div
       data-testid="modalBackdrop"
@@ -52,21 +44,28 @@ function ProductPage(props: ProductPageProps) {
       onClick={handleModalClick}
     >
       <div className="modalContent">
-        {loading && (
+        {isFetching && (
           <div className="loading" data-testid="productPageLoader">
             Loading...
           </div>
         )}
-        {!loading && !product && <h2> Sorry... Nothing was found </h2>}
-        {!loading && product && (
+        {!isFetching && !data && (
           <>
-            <h2 className="modalTitle">{product.title}</h2>
+            <h2> Sorry... Nothing was found </h2>
+            <button className="notFoundPageBtn" onClick={handleCloseBtnClick}>
+              Close
+            </button>
+          </>
+        )}
+        {!isFetching && data && (
+          <>
+            <h2 className="modalTitle">{data?.title}</h2>
             <div className="modalImageContainer">
-              <ProductImage id={product?.id} isModalImage={true} />
+              <ProductImage url={data?.images[0]} isModalImage={true} />
             </div>
-            <h3>{`Category: ${product.category}`}</h3>
-            <p className="modalDescription">{product.description}</p>
-            <h3 className="modalPrice">{`Price: ${product.price}$`}</h3>
+            <h3>{`Category: ${data?.category}`}</h3>
+            <p className="modalDescription">{data?.description}</p>
+            <h3 className="modalPrice">{`Price: ${data?.price}$`}</h3>
             <button className="modalBtn" onClick={handleCloseBtnClick}>
               Close
             </button>

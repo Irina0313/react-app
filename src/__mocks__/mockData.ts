@@ -1,6 +1,6 @@
-import { IApiResp } from '../api/Client';
+import { IApiResp } from '../store/productsAPI';
 
-export const mockContext: IApiResp = {
+export const mockData: IApiResp = {
   products: [
     {
       id: 20,

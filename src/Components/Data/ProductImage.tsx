@@ -1,20 +1,14 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import './ProductImage.css';
-import { ProductsContext } from '../../context';
 
 interface ProductImageProps {
-  id: number | undefined;
+  url: string | undefined;
   isModalImage?: boolean;
 }
 
 function ProductImage(props: ProductImageProps) {
-  const { id, isModalImage } = props;
+  const { url, isModalImage } = props;
 
-  const product = useContext(ProductsContext)?.products.filter(
-    (prod) => prod.id === id
-  )[0];
-
-  const src: string | undefined = product?.images[0];
   const [imageError, setImageError] = useState(false);
   const noImagesrc: string = './no-image-png-2.png';
 
@@ -24,7 +18,7 @@ function ProductImage(props: ProductImageProps) {
 
   return (
     <img
-      src={imageError ? noImagesrc : src}
+      src={imageError ? noImagesrc : url}
       alt="product image"
       className={`${isModalImage ? 'modalImage' : 'productImage'}`}
       onError={handleImageError}

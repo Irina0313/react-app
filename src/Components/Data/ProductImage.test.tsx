@@ -1,31 +1,64 @@
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import {
+  render,
+  act,
+  fireEvent,
+  waitFor,
+  cleanup,
+} from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import ProductImage from './ProductImage';
-import { ProductsContext } from '../../context';
-import { mockContext } from '../../__mocks__/mockContext';
+import { mockData } from '../../__mocks__/mockData';
 
-const mockId = mockContext.products[0].id;
+const mockImageURL = mockData.products[0].images[0];
 const mockIsModalImage = false;
 
+afterEach(() => {
+  cleanup();
+});
+
 describe('Product image tests', () => {
-  const { getByTestId } = render(
-    <ProductImage id={mockId} isModalImage={!mockIsModalImage} />
-  );
+  function initializePage() {
+    jest.clearAllMocks();
+    render(
+      <BrowserRouter>
+        <ProductImage url={mockImageURL} isModalImage={!mockIsModalImage} />
+      </BrowserRouter>
+    );
+  }
 
-  const productImageElement = getByTestId('productImage');
-  test('image must have alt text', () => {
-    const mockId = 20;
-    const { getAllByAltText } = render(<ProductImage id={mockId} />);
-
-    expect(getAllByAltText(/product image/i)).toBeTruthy();
+  test('it could be rendered', async () => {
+    await act(async () => {
+      initializePage();
+    });
+    const productImageElement = screen.getByTestId('productImage');
+    expect(productImageElement).toBeTruthy();
   });
 
-  test('image must have right class name', () => {
-    expect(productImageElement).toBeDefined();
+  test('image must have alt text', async () => {
+    await act(async () => {
+      initializePage();
+    });
+    const productImageElement = screen.getByAltText(/product image/i);
+
+    expect(productImageElement).toBeTruthy();
+  });
+
+  test('image must have right class name', async () => {
+    await act(async () => {
+      initializePage();
+    });
+
+    const productImageElement = screen.getByTestId('productImage');
+    expect(productImageElement).toHaveClass('modalImage');
   });
 
   test('sets imageError to true on image load error', async () => {
     const { container } = render(
-      <ProductImage id={mockId} isModalImage={mockIsModalImage} />
+      <BrowserRouter>
+        <ProductImage url={mockImageURL} isModalImage={mockIsModalImage} />
+      </BrowserRouter>
     );
 
     const productImageElement = container.querySelector(
@@ -41,20 +74,5 @@ describe('Product image tests', () => {
     await waitFor(() => {
       expect(productImageElement.src).toMatch(errorImageSrc);
     });
-  });
-});
-
-describe('products to be rigth filtered', () => {
-  test('it could get context and filter products from it', () => {
-    const { getByTestId } = render(
-      <ProductsContext.Provider value={mockContext}>
-        <ProductImage id={mockId} isModalImage={mockIsModalImage} />
-      </ProductsContext.Provider>
-    );
-
-    const image = getByTestId('productImage') as HTMLImageElement;
-    const expectedSrc = mockContext.products[0].images[0];
-
-    expect(image.src).toEqual(expectedSrc);
   });
 });

@@ -1,39 +1,45 @@
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { useContext } from 'react';
 import Search from '../../Components/Search/Search';
 import Pagination from '../../Components/Pagination/Pagination';
 import Data from '../../Components/Data/Data';
-import { IApiResp } from '../../api/Client';
-import './HomePage.css';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
-import { LoadingContext, ProductsContext } from '../../context';
+import { useGetProductsQuery } from '../../store/productsAPI';
+import useGetCurrentStateParams from '../../hooks/getCurrentStateParams';
+import useGetURLParams from '../../hooks/getURLParams';
+import { updateHomePageLoadingFlag } from '../../store/loadingStateSlice';
+import { useAppDispatch } from '../../hooks/reduxsHooks';
+import './HomePage.css';
 
-export interface HomePageProps {
-  showError: boolean;
-  handlePaginatorBtnsClick: (
-    pageNumber: number,
-    items?: number | undefined
-  ) => void;
-}
+function HomePage() {
+  const dispatch = useAppDispatch();
+  const { pageNumber } = useGetURLParams();
+  const { itemsPerPage, searchRequest } = useGetCurrentStateParams();
 
-function HomePage(props: HomePageProps) {
-  const { showError, handlePaginatorBtnsClick } = props;
+  const { data, isFetching, isLoading, isError } = useGetProductsQuery({
+    currPageNumber: pageNumber,
+    itemsPerPage: itemsPerPage,
+    searchRequest: searchRequest,
+  });
 
-  const data: IApiResp | null = useContext(ProductsContext);
-  const loading = useContext(LoadingContext);
+  useEffect(() => {
+    dispatch(updateHomePageLoadingFlag(isLoading));
+  }, [dispatch, isLoading]);
 
   return (
     <>
       <main className="mainWrapper">
         <Search />
-        {(showError || data?.products.length === 0 || data === null) && (
+        {(isError || pageNumber === 0 || data?.products.length === 0) && (
           <NotFoundPage />
         )}
-        {!showError && data && data.products.length > 0 && (
-          <Pagination onPaginatorBtnsClick={handlePaginatorBtnsClick} />
+        {!isError && data && data?.products.length > 0 && pageNumber !== 0 && (
+          <Pagination />
         )}
-        {loading && <div className="loading">Loading...</div>}
-        {!loading && !showError && <Data />}
+        {isFetching && pageNumber !== 0 && (
+          <div className="loading">Loading...</div>
+        )}
+        {!isFetching && !isError && pageNumber !== 0 && <Data data={data} />}
       </main>
 
       {<Outlet />}
