@@ -1,6 +1,7 @@
 import App, { AppContext, AppInitialProps, AppProps } from 'next/app';
 import { Provider } from 'react-redux';
 import { wrapper } from '@/lib/store';
+import ErrorBoundary from '@/components/errorBoundary/ErrorBoundary';
 import './global.css';
 
 export default function MyApp({ Component, ...rest }: AppProps) {
@@ -8,7 +9,9 @@ export default function MyApp({ Component, ...rest }: AppProps) {
   return (
     <>
       <Provider store={store}>
-        <Component {...props.pageProps} />
+        <ErrorBoundary>
+          <Component {...props.pageProps} />
+        </ErrorBoundary>
       </Provider>
     </>
   );

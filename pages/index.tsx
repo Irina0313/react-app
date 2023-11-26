@@ -1,13 +1,46 @@
-import { IApiResp, ProductProps, getProductById } from '@/lib/productsApi';
+import {
+  IApiResp,
+  ProductProps,
+  getProductById,
+  getProducts,
+  getRunningQueriesThunk,
+} from '@/lib/productsApi';
 import Layout from '@/components/layout';
 import { wrapper } from '@/lib/store';
-import { getProducts, getRunningQueriesThunk } from '@/lib/productsApi';
+
 import Data from '@/components/data';
 import ProductPage from '@/components/productPage';
 import Search from '@/components/search';
 import Pagination from '@/components/pagination';
 import NotFoundPage from './404';
 import { useRouter } from 'next/router';
+
+export interface MainPageProps {
+  data: IApiResp | null;
+  product: ProductProps | null;
+}
+
+const MainPage = ({ ...props }: MainPageProps) => {
+  const router = useRouter();
+  const { data, product } = props;
+
+  return (
+    <>
+      {data && data.skip < data.total ? (
+        <Layout>
+          <Search />
+          <Pagination {...data} />
+          <Data data={data} />
+          {router.query.product && <ProductPage product={product} />}
+        </Layout>
+      ) : (
+        <NotFoundPage />
+      )}
+    </>
+  );
+};
+
+export default MainPage;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
@@ -75,30 +108,3 @@ export const getServerSideProps = wrapper.getServerSideProps(
     };
   }
 );
-
-interface MainPageProps {
-  data: IApiResp | null;
-  product: ProductProps | null;
-}
-
-const MainPage = ({ ...props }: MainPageProps) => {
-  const router = useRouter();
-  const { data, product } = props;
-  console.log(data);
-  return (
-    <>
-      {data && data.skip < data.total ? (
-        <Layout>
-          <Search />
-          <Pagination {...data} />
-          <Data data={data} />
-          {router.query.product && <ProductPage product={product} />}
-        </Layout>
-      ) : (
-        <NotFoundPage />
-      )}
-    </>
-  );
-};
-
-export default MainPage;

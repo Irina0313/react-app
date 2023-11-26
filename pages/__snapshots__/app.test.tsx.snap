@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MyApp renders without crashing 1`] = `
+<DocumentFragment>
+  <div>
+    Test Component
+  </div>
+</DocumentFragment>
+`;
+
+exports[`MyApp wraps the app with the Redux Provider 1`] = `
+<DocumentFragment>
+  <div>
+    Test Component
+  </div>
+</DocumentFragment>
+`;

@@ -1,0 +1,10 @@
+.errorTitle {
+  margin: 40px 0;
+  line-height: 1.5;
+}
+
+.errBoundaryBtn {
+  width: 250px;
+  font-size: 1.8em;
+  align-self: center;
+}
