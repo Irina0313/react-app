@@ -6,6 +6,7 @@ import './global.css';
 
 export default function MyApp({ Component, ...rest }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(rest);
+
   return (
     <>
       <Provider store={store}>

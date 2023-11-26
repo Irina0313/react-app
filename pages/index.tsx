@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import {
   IApiResp,
   ProductProps,
@@ -13,7 +14,6 @@ import ProductPage from '@/components/productPage';
 import Search from '@/components/search';
 import Pagination from '@/components/pagination';
 import NotFoundPage from './404';
-import { useRouter } from 'next/router';
 
 export interface MainPageProps {
   data: IApiResp | null;

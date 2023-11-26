@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import NotFoundPage from '.';
 import { useRouter } from 'next/router';
+import NotFoundPage from '.';
 
 jest.mock('next/router', () => ({
   useRouter: jest.fn(),

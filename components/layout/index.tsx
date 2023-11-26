@@ -20,7 +20,7 @@ export default function Layout({ children }: layoutProps) {
     setIsTestError(true);
   };
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-testid="layout">
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <meta name="description" content={siteTitle} />

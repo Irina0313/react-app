@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import MainPage, { getServerSideProps } from '.';
 import { useRouter } from 'next/router';
-import { mockData } from '@/mocks/mockData';
-import { mockProduct } from '@/mocks/mockProduct';
 import { GetServerSidePropsContext } from 'next';
 import { createRequest, createResponse } from 'node-mocks-http';
+import MainPage, { getServerSideProps } from '.';
+import { mockData } from '@/mocks/mockData';
+import { mockProduct } from '@/mocks/mockProduct';
 
 jest.mock('next/router', () => ({
   useRouter: jest.fn(),

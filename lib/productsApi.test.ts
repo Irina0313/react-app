@@ -1,7 +1,7 @@
-import { IApiResp, IGetProducts, ProductProps } from './productsApi';
 import { BaseQueryFn, createApi } from '@reduxjs/toolkit/query/react';
 import { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 import { waitFor } from '@testing-library/react';
+import { IApiResp, IGetProducts, ProductProps } from './productsApi';
 
 const customFetchBaseQuery: BaseQueryFn = async (args) => {
   const response = await fetch(args.input, args.init);

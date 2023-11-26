@@ -7,6 +7,7 @@ function NotFoundPage() {
   const handleClick = () => {
     router.push('/');
   };
+
   return (
     <>
       <h1 className={styles.notFoundPageTitle}>Page was not found</h1>
