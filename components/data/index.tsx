@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import styles from './Data.module.css';
+import styles from './data.module.css';
 import Product from '../product';
 import { IApiResp } from '@/lib/productsApi';
 
