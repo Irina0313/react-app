@@ -58,8 +58,6 @@ export const productsApi = createApi({
 });
 
 export const {
-  useGetProductsQuery,
-  useGetProductByIdQuery,
   util: { getRunningQueriesThunk },
 } = productsApi;
 
