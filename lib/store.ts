@@ -1,17 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
 import { productsApi } from './productsApi';
-import paginationReducer from './paginationSlice';
-import searchReducer from './searchSlice';
 
 export const makeStore = () =>
   configureStore({
     reducer: {
       [productsApi.reducerPath]: productsApi.reducer,
-      paginationParams: paginationReducer,
-      search: searchReducer,
-      /*homePageLoadingFlag: loadingStateSliceReduser,
-    productPageLoadingFlag: loadingStateSliceReduser, */
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(productsApi.middleware),

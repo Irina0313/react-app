@@ -2,11 +2,7 @@ import { useRef, FormEvent } from 'react';
 import styles from './Search.module.css';
 import { useRouter } from 'next/router';
 
-interface SearchParams {
-  searchRequest: string;
-}
-
-function Search({ searchRequest }: SearchParams) {
+function Search() {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -30,7 +26,7 @@ function Search({ searchRequest }: SearchParams) {
         <input
           ref={inputRef}
           className={styles.searchInput}
-          defaultValue={searchRequest || ''}
+          defaultValue={router.query.search || ''}
           type="search"
         />
         <button
