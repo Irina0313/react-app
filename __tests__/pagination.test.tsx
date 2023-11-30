@@ -1,6 +1,6 @@
 // Pagination.test.tsx
 import { render, screen, fireEvent } from '@testing-library/react';
-import Pagination from '.';
+import Pagination from '../components/pagination';
 import { mockData } from '@/mocks/mockData';
 import { useRouter } from 'next/router';
 

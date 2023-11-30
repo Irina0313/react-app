@@ -1,5 +1,5 @@
 import { render, act, screen, cleanup } from '@testing-library/react';
-import ErrorComponent from './ErrorComponent';
+import ErrorComponent from '../components/errorBoundary/ErrorComponent';
 
 afterEach(() => {
   cleanup();

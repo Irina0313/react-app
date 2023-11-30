@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { mockProduct } from '@/mocks/mockProduct';
-import ProductPage from '.';
+import ProductPage from '../components/productPage';
 
 jest.mock('next/router', () => ({
   ...jest.requireActual('next/router'),
