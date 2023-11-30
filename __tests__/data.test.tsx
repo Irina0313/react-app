@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { useRouter } from 'next/router';
-import Data from '.';
+import Data from '../components/data';
 import { mockData } from '@/mocks/mockData';
 
 jest.mock('next/router', () => ({

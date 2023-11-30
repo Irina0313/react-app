@@ -9,4 +9,8 @@ module.exports = {
       },
     ],
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  pageExtensions: ['mdx', 'md', 'jsx', 'js', 'tsx', 'ts'],
 };

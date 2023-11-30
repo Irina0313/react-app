@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
-import Search from '.';
+import Search from '../components/search';
 import { NextRouter, useRouter } from 'next/router';
 
 type MockRouter = Partial<NextRouter>;

@@ -1,5 +1,5 @@
 import { cleanup } from '@testing-library/react';
-import safeJsonParse from './JsonActions';
+import safeJsonParse from '../utils/JsonActions';
 
 afterEach(() => {
   cleanup();

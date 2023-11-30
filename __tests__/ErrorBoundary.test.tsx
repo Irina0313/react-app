@@ -1,6 +1,6 @@
 import { render, screen, act, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import ErrorBoundary from './ErrorBoundary';
+import ErrorBoundary from '../components/errorBoundary/ErrorBoundary';
 
 const mockHandleClick = jest.fn();
 const ErrorComp = () => {

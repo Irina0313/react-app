@@ -2,7 +2,8 @@ import { render, screen } from '@testing-library/react';
 import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next';
 import { createRequest, createResponse } from 'node-mocks-http';
-import MainPage, { getServerSideProps } from '.';
+import MainPage from '../pages';
+import { getServerSideProps } from '../pages';
 import { mockData } from '@/mocks/mockData';
 import { mockProduct } from '@/mocks/mockProduct';
 
