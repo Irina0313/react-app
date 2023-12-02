@@ -1,0 +1,42 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 700px;
+}
+
+.errorInput {
+  color: red;
+  border-color: red;
+  box-shadow: 0 0 5px red;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  min-height: 70px;
+
+}
+
+
+.errorText {
+  font-size: 0.8rem;
+  color: red;
+  margin-right: 8px;
+}
+
+.errorRadio,
+.errorCheckbox {
+  color: red;
+  border-color: red;
+}
+
+.progressBarContainer {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.passwordInput {
+  width: 40%;
+}
