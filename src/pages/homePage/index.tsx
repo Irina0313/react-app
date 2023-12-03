@@ -5,7 +5,7 @@ const HomePage = () => {
   const data = useAppSelector((state) => state.formData);
   return (
     <>
-      <h1 className={styles.title}>HomePage</h1>
+      <h1 className={styles.title}>Home Page</h1>
       <div>
         <h2 className={styles.title}>Forms Results</h2>
         <div className={styles.cardsContainer}>

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { ValidationError } from 'yup';
 import { useAppDispatch } from '../../hooks/reduxHooks';
 import { addResults } from '../../store/formSlice';
-import styles from './form.module.css';
 import { FormState } from '../../store/formSlice';
 import AutocompleteCountry from '../autocompleteCountry';
 import { fieldsSchema } from '../../utils/yupSchema';
@@ -11,6 +10,7 @@ import ProgressBar from '../progressBar';
 import { FormFields, FormData } from './types';
 import { convertFileToBase64 } from '../../utils/convertFileToBase64';
 import { getProgress } from '../../utils/getProgressBarLevel';
+import styles from './form.module.css';
 
 const Form = () => {
   const dispatch = useAppDispatch();
@@ -80,9 +80,11 @@ const Form = () => {
 
         error.inner.forEach((err) => {
           const path = err.path!;
+
           if (!newErrors[path]) {
             newErrors[path] = [];
           }
+
           newErrors[path].push(err.message);
         });
 
@@ -110,6 +112,7 @@ const Form = () => {
               ))}
           </div>
         </label>
+
         <label className={styles.label}>
           Age:
           <input
@@ -126,6 +129,7 @@ const Form = () => {
               ))}
           </div>
         </label>
+
         <label className={styles.label}>
           Email:
           <input
@@ -143,6 +147,7 @@ const Form = () => {
               ))}
           </div>
         </label>
+
         <label className={styles.label}>
           Password:
           <div className={styles.progressBarContainer}>
@@ -166,6 +171,7 @@ const Form = () => {
               ))}
           </div>
         </label>
+
         <label className={styles.label}>
           Repeat password:
           <input
@@ -185,6 +191,7 @@ const Form = () => {
               ))}
           </div>
         </label>
+
         <div className={styles.label}>
           Genger:
           <div>
@@ -214,6 +221,7 @@ const Form = () => {
             </div>
           </div>
         </div>
+
         <label className={`${styles.label} ${styles.labelNarrow} `}>
           <div>
             <input
@@ -232,6 +240,7 @@ const Form = () => {
               ))}
           </div>
         </label>
+
         <label htmlFor="country" className={styles.label}>
           <div>Country:</div>
           <input

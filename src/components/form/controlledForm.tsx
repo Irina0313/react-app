@@ -6,12 +6,12 @@ import { useAppDispatch } from '../../hooks/reduxHooks';
 import { fieldsSchema } from '../../utils/yupSchema';
 import { FormData } from './types';
 import { FormState } from '../../store/formSlice';
-import styles from './form.module.css';
 import AutocompleteCountry from '../autocompleteCountry';
 import { addResults } from '../../store/formSlice';
 import { convertFileToBase64 } from '../../utils/convertFileToBase64';
 import ProgressBar from '../progressBar';
 import { getProgress } from '../../utils/getProgressBarLevel';
+import styles from './form.module.css';
 
 const ControllForm = () => {
   const dispatch = useAppDispatch();
@@ -153,6 +153,7 @@ const ControllForm = () => {
             {...register('gender')}
             className={errors.gender && styles.errorRadio}
           />
+
           <label htmlFor="male">Male</label>
           <input
             type="radio"
@@ -161,6 +162,7 @@ const ControllForm = () => {
             {...register('gender')}
             className={errors.gender && styles.errorRadio}
           />
+
           <label htmlFor="female">Female</label>
           <div className={styles.errorContainer}>
             <p className={styles.errorText}>{errors.gender?.message}</p>

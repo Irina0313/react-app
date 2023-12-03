@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = [
+export const initialState = [
   'Afghanistan',
   'Albania',
   'Algeria',
@@ -202,8 +202,8 @@ const countrySlice = createSlice({
   name: 'countries',
   initialState,
   reducers: {
-    setCountries: (state, action) => {
-      return (state = action.payload);
+    setCountries: (_undefined, action) => {
+      return action.payload;
     },
   },
 });

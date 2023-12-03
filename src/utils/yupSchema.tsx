@@ -1,4 +1,5 @@
 import { object, string, number, mixed, boolean } from 'yup';
+import { initialState } from '../store/countrySlice';
 
 const passwordStrengthRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).*$/;
 
@@ -67,6 +68,8 @@ export const fieldsSchema = object()
         }
       ),
 
-    country: string().required('Field is required'),
+    country: string()
+      .required('Field is required')
+      .oneOf(initialState, 'Select country from the list'),
   })
   .defined();
