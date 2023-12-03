@@ -1,0 +1,52 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 700px;
+}
+
+.errorInput {
+  color: red;
+  border-color: red;
+  box-shadow: 0 0 5px red;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  height: 70px;
+}
+
+.labelNarrow {
+  height: 50px;
+}
+
+.errorText {
+  font-size: 0.8rem;
+  color: red;
+  margin: 0 8px 0 0;
+}
+
+.errorRadio,
+.errorCheckbox {
+  color: red;
+  border-color: red;
+}
+
+.progressBarContainer {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.passwordInput {
+  width: 40%;
+}
+
+.buttonDisabled {
+  background-color: burlywood;
+}
+
+.buttonDisabled:hover {
+  border-color: transparent;
+}
