@@ -46,8 +46,8 @@ const Form = () => {
       repeatPassword: repeatPassword.value,
       gender: gender.value,
       acceptTC: acceptTC.checked,
-      picture: selectedFile,
       country: country.value,
+      picture: selectedFile,
     };
 
     setPasswordStrength(getProgress(password.value));
@@ -214,7 +214,7 @@ const Form = () => {
             </div>
           </div>
         </div>
-        <label className={styles.label}>
+        <label className={`${styles.label} ${styles.labelNarrow} `}>
           <div>
             <input
               type="checkbox"
@@ -232,23 +232,7 @@ const Form = () => {
               ))}
           </div>
         </label>
-        <label className={styles.label}>
-          Upload picture:
-          <input
-            type="file"
-            name="picture"
-            className={formErrors.picture && styles.errorInput}
-          />
-          <div className={styles.errorContainer}>
-            {formErrors.picture &&
-              formErrors.picture.map((error, index) => (
-                <span key={index} className={styles.errorText}>
-                  {error}
-                </span>
-              ))}
-          </div>
-        </label>
-        <label htmlFor="country">
+        <label htmlFor="country" className={styles.label}>
           <div>Country:</div>
           <input
             id="country"
@@ -269,6 +253,24 @@ const Form = () => {
               ))}
           </div>
         </label>
+
+        <label className={styles.label}>
+          Upload picture:
+          <input
+            type="file"
+            name="picture"
+            className={formErrors.picture && styles.errorInput}
+          />
+          <div className={styles.errorContainer}>
+            {formErrors.picture &&
+              formErrors.picture.map((error, index) => (
+                <span key={index} className={styles.errorText}>
+                  {error}
+                </span>
+              ))}
+          </div>
+        </label>
+
         <button type="submit">Submit</button>
       </form>
     </>

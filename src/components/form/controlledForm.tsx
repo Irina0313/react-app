@@ -43,7 +43,6 @@ const ControllForm = () => {
 
     const pictureToBase64 =
       picture instanceof File ? await convertFileToBase64(picture) : '';
-    console.log(data);
     const formData: FormState = {
       name: data.name,
       age: data.age,
@@ -52,24 +51,30 @@ const ControllForm = () => {
       repeatPassword: data.repeatPassword,
       gender: data.gender,
       acceptTC: data.acceptTC,
-      picture: pictureToBase64,
       country: data.country,
+      picture: pictureToBase64,
     };
     dispatch(addResults(formData));
     navigate('/');
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <label>
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+      <label className={styles.label}>
         Name:
-        <input {...register('name')} />
-        <p className={styles.errorText}>{errors.name?.message}</p>
+        <input
+          {...register('name')}
+          className={errors.name && styles.errorInput}
+        />
+        <div className={styles.errorContainer}>
+          <p className={styles.errorText}>{errors.name?.message}</p>
+        </div>
       </label>
 
-      <label>
+      <label className={styles.label}>
         Age:
         <input
+          className={errors.age && styles.errorInput}
           {...register('age')}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             if (!e.target.value) {
@@ -90,16 +95,23 @@ const ControllForm = () => {
             }
           }}
         />
-        <p className={styles.errorText}>{errors.age?.message}</p>
+        <div className={styles.errorContainer}>
+          <p className={styles.errorText}>{errors.age?.message}</p>
+        </div>
       </label>
 
-      <label>
+      <label className={styles.label}>
         Email:
-        <input {...register('email')} />
-        <p className={styles.errorText}>{errors.email?.message}</p>
+        <input
+          {...register('email')}
+          className={errors.email && styles.errorInput}
+        />
+        <div className={styles.errorContainer}>
+          <p className={styles.errorText}>{errors.email?.message}</p>
+        </div>
       </label>
 
-      <label>
+      <label className={styles.label}>
         Password:
         <div className={styles.progressBarContainer}>
           <input
@@ -112,25 +124,51 @@ const ControllForm = () => {
           />
           <ProgressBar strength={passwordStrength} />
         </div>
-        <p className={styles.errorText}>{errors.password?.message}</p>
+        <div className={styles.errorContainer}>
+          <p className={styles.errorText}>{errors.password?.message}</p>
+        </div>
       </label>
 
-      <label>
+      <label className={styles.label}>
         Repeat password:
-        <input {...register('repeatPassword')} type="password" />
-        <p className={styles.errorText}>{errors.repeatPassword?.message}</p>
+        <input
+          {...register('repeatPassword')}
+          type="password"
+          className={`${styles.passwordInput} ${
+            errors.repeatPassword && styles.errorInput
+          }`}
+        />
+        <div className={styles.errorContainer}>
+          <p className={styles.errorText}>{errors.repeatPassword?.message}</p>
+        </div>
       </label>
 
-      <label>
+      <label className={styles.label}>
         Genger:
-        <input type="radio" id="male" value="male" {...register('gender')} />
-        <label htmlFor="male">Male</label>
-        <input type="radio" id="male" value="male" {...register('gender')} />
-        <label htmlFor="female">Female</label>
-        <p className={styles.errorText}>{errors.gender?.message}</p>
+        <div>
+          <input
+            type="radio"
+            id="male"
+            value="male"
+            {...register('gender')}
+            className={errors.gender && styles.errorRadio}
+          />
+          <label htmlFor="male">Male</label>
+          <input
+            type="radio"
+            id="male"
+            value="male"
+            {...register('gender')}
+            className={errors.gender && styles.errorRadio}
+          />
+          <label htmlFor="female">Female</label>
+          <div className={styles.errorContainer}>
+            <p className={styles.errorText}>{errors.gender?.message}</p>
+          </div>
+        </div>
       </label>
 
-      <label>
+      <label className={`${styles.label} ${styles.labelNarrow} `}>
         <div>
           <Controller
             control={control}
@@ -138,6 +176,7 @@ const ControllForm = () => {
             render={({ field: { value, onChange, ...field } }) => {
               return (
                 <input
+                  className={errors.acceptTC && styles.errorCheckbox}
                   {...field}
                   type="checkbox"
                   onChange={(event) => {
@@ -154,33 +193,12 @@ const ControllForm = () => {
           />
           Accept Terms & Conditions:
         </div>
-
-        <p className={styles.errorText}>{errors.acceptTC?.message}</p>
+        <div className={styles.errorContainer}>
+          <p className={styles.errorText}>{errors.acceptTC?.message}</p>
+        </div>
       </label>
 
-      <label>
-        <Controller
-          control={control}
-          name={'picture'}
-          render={({ field: { value, onChange, ...field } }) => {
-            return (
-              <input
-                {...field}
-                type="file"
-                onChange={(event) => {
-                  if (event.target.files) {
-                    onChange(event.target.files[0]);
-                  }
-                }}
-                id="picture"
-              />
-            );
-          }}
-        />
-        <p className={styles.errorText}>{errors.picture?.message}</p>
-      </label>
-
-      <label htmlFor="country">
+      <label htmlFor="country" className={styles.label}>
         <div>Country:</div>
         <input
           id="country"
@@ -196,9 +214,44 @@ const ControllForm = () => {
           }}
         />
         <AutocompleteCountry />
-        <p className={styles.errorText}>{errors.country?.message}</p>
+        <div className={styles.errorContainer}>
+          <p className={styles.errorText}>{errors.country?.message}</p>
+        </div>
       </label>
-      <input type="submit" />
+
+      <label className={styles.label}>
+        Upload picture:
+        <Controller
+          control={control}
+          name={'picture'}
+          render={({ field: { value, onChange, ...field } }) => {
+            return (
+              <input
+                {...field}
+                type="file"
+                onChange={(event) => {
+                  if (event.target.files) {
+                    onChange(event.target.files[0]);
+                  }
+                }}
+                id="picture"
+                className={errors.picture && styles.errorInput}
+              />
+            );
+          }}
+        />
+        <div className={styles.errorContainer}>
+          <p className={styles.errorText}>{errors.picture?.message}</p>
+        </div>
+      </label>
+
+      <button
+        type="submit"
+        disabled={Object.keys(errors).length ? true : false}
+        className={`${Object.keys(errors).length && styles.buttonDisabled}`}
+      >
+        Submit
+      </button>
     </form>
   );
 };

@@ -8,8 +8,8 @@ export type FormState = {
   repeatPassword: string;
   gender: string;
   acceptTC: boolean;
-  picture: string;
   country: string;
+  picture: string;
 };
 
 const initialState: FormState[] = [];

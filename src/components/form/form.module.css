@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  min-width: 700px;
+  width: 700px;
 }
 
 .errorInput {
@@ -14,13 +14,18 @@
 .label {
   display: flex;
   flex-direction: column;
-  min-height: 70px;
+  height: 70px;
+}
+
+.labelNarrow {
+  height: 50px;
 }
 
 .errorText {
   font-size: 0.8rem;
   color: red;
-  margin-right: 8px;
+  margin: 0 8px 0 0;
+
 }
 
 .errorRadio,
@@ -37,4 +42,13 @@
 
 .passwordInput {
   width: 40%;
+}
+
+.buttonDisabled {
+  background-color: burlywood;
+}
+
+.buttonDisabled:hover {
+
+  border-color: transparent;
 }

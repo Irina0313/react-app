@@ -3,20 +3,24 @@ import styles from './layout.module.css';
 
 const Layout = () => {
   return (
-    <>
-      <header>
+    <div className={styles.appContainer}>
+      <header className={styles.header}>
         <nav id="sidebar" className={styles.navContainer}>
-          <NavLink to="/">Main page</NavLink>
-          <NavLink to="/uncontrolledForm" end>
+          <NavLink to="/" className={styles.navLink}>
+            Home page
+          </NavLink>
+          <NavLink to="/uncontrolledForm" className={styles.navLink} end>
             Uncontrolled form
           </NavLink>
-          <NavLink to="/controlledForm" end>
+          <NavLink to="/controlledForm" className={styles.navLink} end>
             Controlled form
           </NavLink>
         </nav>
       </header>
-      <Outlet />
-    </>
+      <main className={styles.mainContainer}>
+        <Outlet />
+      </main>
+    </div>
   );
 };
 

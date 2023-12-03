@@ -3,7 +3,7 @@ import Form from '../../components/form/uncontrolledForm';
 const UncontrolledForm = () => {
   return (
     <>
-      <h1>UncontrolledForm</h1>
+      <h1>Uncontrolled Form</h1>
       <Form />
     </>
   );

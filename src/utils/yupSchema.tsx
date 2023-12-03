@@ -6,7 +6,7 @@ export const fieldsSchema = object()
   .shape({
     name: string()
       .required('Field is required')
-      .matches(/^[A-Z][a-z]*$/, 'Name must start with an uppercase letter'),
+      .matches(/^[A-Z]/, 'Name must start with an uppercase letter'),
     age: number()
       .transform((originalValue) => {
         const parsedValue = Number(originalValue);
@@ -58,7 +58,6 @@ export const fieldsSchema = object()
           if (Array.isArray(value)) {
             for (const file of value) {
               if (!(file instanceof File)) {
-                console.log('value[0].size', value[0].size);
                 return value[0].size <= maxSize;
               }
             }

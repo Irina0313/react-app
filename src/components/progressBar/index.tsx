@@ -5,7 +5,6 @@ interface IProgressBarProps {
 }
 
 const ProgressBar = ({ strength }: IProgressBarProps) => {
-  console.log(strength);
   let style = '';
 
   if (strength >= 0 && strength <= 0.25) {
