@@ -25,7 +25,6 @@
   font-size: 0.8rem;
   color: red;
   margin: 0 8px 0 0;
-
 }
 
 .errorRadio,
@@ -49,6 +48,5 @@
 }
 
 .buttonDisabled:hover {
-
   border-color: transparent;
 }
