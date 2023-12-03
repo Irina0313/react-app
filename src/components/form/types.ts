@@ -18,6 +18,6 @@ export type FormData = {
   repeatPassword: string;
   gender: string;
   acceptTC: boolean;
-  picture: false | File | null;
+  picture?: File | undefined | object;
   country: string;
 };

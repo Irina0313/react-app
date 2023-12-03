@@ -36,8 +36,7 @@ const Form = () => {
       picture,
     } = form;
 
-    const selectedFile =
-      picture.files && picture.files.length > 0 && picture.files[0];
+    const selectedFile = picture.files ? picture.files[0] : undefined;
 
     const data: FormData = {
       name: name.value,
@@ -57,7 +56,9 @@ const Form = () => {
       await fieldsSchema.validate(data, { abortEarly: false });
 
       const pictureToBase64 =
-        data.picture && (await convertFileToBase64(data.picture));
+        data.picture &&
+        data.picture instanceof File &&
+        (await convertFileToBase64(data.picture));
 
       const formData: FormState = {
         name: data.name,
@@ -89,22 +90,6 @@ const Form = () => {
       }
     }
   };
-  /* 
-  const handlePasswordChange: React.ChangeEventHandler<HTMLInputElement> = (
-    e
-  ) => {
-    const newPassword = e.target.value;
-
-    const conditions = [
-      /\d/.test(newPassword),
-      /[A-Z]/.test(newPassword),
-      /[a-z]/.test(newPassword),
-      /[\W_]/.test(newPassword),
-    ];
-
-    const progress = conditions.filter(Boolean).length / conditions.length;
-    setPasswordStrength(progress);
-  }; */
 
   return (
     <>
@@ -168,7 +153,6 @@ const Form = () => {
               className={`${styles.passwordInput} ${
                 formErrors.password && styles.errorInput
               }`}
-              /* onChange={handlePasswordChange} */
             />
 
             <ProgressBar strength={passwordStrength} />
